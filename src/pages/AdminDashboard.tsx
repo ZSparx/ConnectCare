@@ -284,6 +284,12 @@ export default function AdminDashboard() {
     setOppLoading(false);
   }
 
+  async function toggleOpportunityStatus(oppId: string, currentStatus: string) {
+    const newStatus = currentStatus === 'open' ? 'closed' : 'open';
+    await supabase.from('opportunities').update({ status: newStatus }).eq('id', oppId);
+    await fetchOpportunities();
+  }
+
   async function submitAssignment() {
     if (!assignModal || !selectedCompanyId) return;
     setAssignLoading(true);
@@ -531,7 +537,7 @@ export default function AdminDashboard() {
                             <td className="px-4 py-3 text-slate-300">{d.location?.country_name ?? '—'}</td>
                             <td className="px-4 py-3 text-slate-400">{d.location?.city ?? '—'}</td>
                             <td className="px-4 py-3 text-slate-400 text-xs">{d.location?.time_zone?.split(' (')[0] ?? '—'}</td>
-                            <td className="px-4 py-3 text-slate-400 text-xs truncate max-w-[120px]">{d.profile.phone ?? '—'}</td>
+                            <td className="px-4 py-3 text-slate-400 text-xs truncate max-w-[140px]">{d.profile.email ?? '—'}</td>
                             <td className="px-4 py-3 text-slate-400 text-xs">{d.profile.phone ?? '—'}</td>
                             <td className="px-4 py-3 text-slate-500 text-xs">{d.application?.submitted_at ? new Date(d.application.submitted_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '—'}</td>
                             <td className="px-4 py-3">
@@ -730,9 +736,21 @@ export default function AdminDashboard() {
                             <p className="font-semibold text-white text-sm">{opp.title}</p>
                             <p className="text-slate-500 text-xs mt-1">{opp.description}</p>
                           </div>
-                          <span className={`text-xs px-2 py-0.5 rounded-md border ${opp.status === 'open' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-slate-400 bg-slate-500/10 border-slate-500/20'}`}>
-                            {opp.status}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <span className={`text-xs px-2 py-0.5 rounded-md border ${opp.status === 'open' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-slate-400 bg-slate-500/10 border-slate-500/20'}`}>
+                              {opp.status}
+                            </span>
+                            <button
+                              onClick={() => toggleOpportunityStatus(opp.id, opp.status)}
+                              className={`text-xs px-2.5 py-1 rounded-md border transition-colors ${
+                                opp.status === 'open'
+                                  ? 'text-slate-400 bg-slate-800 border-white/10 hover:text-red-400 hover:border-red-500/20'
+                                  : 'text-slate-400 bg-slate-800 border-white/10 hover:text-emerald-400 hover:border-emerald-500/20'
+                              }`}
+                            >
+                              {opp.status === 'open' ? 'Close' : 'Reopen'}
+                            </button>
+                          </div>
                         </div>
                       </div>
                     ))}

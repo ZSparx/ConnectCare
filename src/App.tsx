@@ -6,7 +6,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import RecruitmentLanding from './pages/RecruitmentLanding';
 import AgentApplicationForm from './pages/AgentApplicationForm';
 import PrivacyPolicy from './pages/PrivacyPolicy';
-import { Car, Loader2 } from 'lucide-react';
+import { Headset, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
 type View = 'dashboard' | 'apply' | 'recruitment' | 'privacy';
@@ -20,7 +20,7 @@ function AppContent() {
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 bg-sky-500 rounded-xl flex items-center justify-center shadow-xl shadow-sky-500/30">
-            <Car size={24} className="text-white" />
+            <Headset size={24} className="text-white" />
           </div>
           <Loader2 size={20} className="animate-spin text-sky-500" />
         </div>
@@ -39,6 +39,7 @@ function AppContent() {
             el?.scrollIntoView({ behavior: 'smooth' });
           }}
           onSignIn={() => setView('dashboard')}
+          onPrivacy={() => setView('privacy')}
         />
       </>
     );
@@ -47,6 +48,11 @@ function AppContent() {
   // Application form (requires auth)
   if (!session && view === 'apply') {
     return <AuthPage onRecruitment={() => setView('recruitment')} />;
+  }
+
+  // Privacy policy (accessible without auth)
+  if (!session && view === 'privacy') {
+    return <PrivacyPolicy onBack={() => setView('recruitment')} />;
   }
 
   if (!session) {

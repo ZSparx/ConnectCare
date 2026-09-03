@@ -33,6 +33,7 @@ type Props = {
   onApply: () => void;
   onLearnMore?: () => void;
   onSignIn: () => void;
+  onPrivacy: () => void;
 };
 
 const SERVICES = [
@@ -78,7 +79,7 @@ const SERVICE_OPTIONS = [
   'Not sure yet',
 ];
 
-export default function RecruitmentLanding({ onApply, onSignIn }: Props) {
+export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Props) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [form, setForm] = useState({
     company_name: '',
@@ -592,6 +593,12 @@ export default function RecruitmentLanding({ onApply, onSignIn }: Props) {
                   className="block text-slate-500 hover:text-sky-400 text-sm transition-colors"
                 >
                   Agent Sign In
+                </button>
+                <button
+                  onClick={onPrivacy}
+                  className="block text-slate-500 hover:text-sky-400 text-sm transition-colors"
+                >
+                  Privacy Policy
                 </button>
               </div>
             </div>

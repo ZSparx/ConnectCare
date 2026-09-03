@@ -55,6 +55,7 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
   const { user, profile } = useAuth();
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [countrySearch, setCountrySearch] = useState('');
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
@@ -368,12 +369,34 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
         phone: mobilePhone,
       }).eq('id', agentId);
 
-      onDone();
+      setSubmitted(true);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to submit application');
     } finally {
       setSubmitting(false);
     }
+  }
+
+  if (submitted) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
+        <div className="max-w-md text-center">
+          <div className="w-16 h-16 rounded-full bg-emerald-500/15 flex items-center justify-center mx-auto mb-5">
+            <CheckCircle2 size={36} className="text-emerald-400" />
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-3">Application Submitted!</h2>
+          <p className="text-slate-400 text-sm mb-2">
+            Thank you, {firstName}. Your application has been received and is now under review.
+          </p>
+          <p className="text-slate-500 text-sm mb-8">
+            You can track your application status from your dashboard. Our recruiting team will reach out if your profile matches an available opportunity.
+          </p>
+          <button onClick={onDone} className="px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-xl transition-all shadow-lg shadow-sky-500/25">
+            Go to Dashboard
+          </button>
+        </div>
+      </div>
+    );
   }
 
   if (existingApp) {

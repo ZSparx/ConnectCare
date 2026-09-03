@@ -11,6 +11,7 @@ export type Profile = {
   role: 'agent' | 'admin';
   status: 'available' | 'busy' | 'offline';
   phone: string | null;
+  email: string | null;
   created_at: string;
 };
 
