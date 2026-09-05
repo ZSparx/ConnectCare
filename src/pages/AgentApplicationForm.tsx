@@ -371,7 +371,8 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
 
       setSubmitted(true);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to submit application');
+      console.error('Application submission failed', err);
+      setError('We could not submit your application right now. Please review your answers and try again.');
     } finally {
       setSubmitting(false);
     }

@@ -46,11 +46,15 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
         if (error) throw error;
       }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'An error occurred';
-      if (msg.toLowerCase().includes('email not confirmed')) {
+      const msg = (err instanceof Error ? err.message : '').toLowerCase();
+      if (msg.includes('email not confirmed')) {
         setError('Your email is not confirmed yet. Please check your inbox for a confirmation link before signing in.');
+      } else if (msg.includes('invalid login credentials')) {
+        setError('That email and password combination is not correct.');
+      } else if (mode === 'signup') {
+        setError('We could not create your account right now. Please check your details and try again.');
       } else {
-        setError(msg);
+        setError('We could not sign you in right now. Please try again in a moment.');
       }
     } finally {
       setLoading(false);
@@ -66,7 +70,7 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
     });
     setResetLoading(false);
     if (error) {
-      setError(error.message);
+      setError('We could not send the reset link right now. Please try again in a moment.');
       return;
     }
     setResetSent(true);

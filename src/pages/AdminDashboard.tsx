@@ -71,7 +71,7 @@ type AgentDetail = {
 type SortField = 'name' | 'country' | 'city' | 'status' | 'date';
 
 export default function AdminDashboard() {
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
   const [tab, setTab] = useState<Tab>('overview');
   const [agents, setAgents] = useState<Profile[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
@@ -214,10 +214,10 @@ export default function AdminDashboard() {
   }
 
   async function sendMessage() {
-    if (!selectedAgent || !newMessage.trim()) return;
+    if (!selectedAgent || !newMessage.trim() || !user) return;
     await supabase.from('agent_messages').insert({
       agent_id: selectedAgent.profile.id,
-      sender_id: selectedAgent.profile.id,
+      sender_id: user.id,
       body: newMessage.trim(),
     });
     setNewMessage('');
@@ -226,10 +226,10 @@ export default function AdminDashboard() {
   }
 
   async function addNote() {
-    if (!selectedAgent || !newNote.trim()) return;
+    if (!selectedAgent || !newNote.trim() || !user) return;
     await supabase.from('recruiter_notes').insert({
       agent_id: selectedAgent.profile.id,
-      recruiter_id: selectedAgent.profile.id,
+      recruiter_id: user.id,
       note: newNote.trim(),
     });
     setNewNote('');
@@ -238,12 +238,12 @@ export default function AdminDashboard() {
   }
 
   async function updateApplicationStatus(newStatus: string) {
-    if (!selectedAgent?.application) return;
+    if (!selectedAgent?.application || !user) return;
     await supabase.from('agent_applications').update({ status: newStatus, updated_at: new Date().toISOString() }).eq('agent_id', selectedAgent.profile.id);
     await supabase.from('agent_status_history').insert({
       agent_id: selectedAgent.profile.id,
       status: newStatus,
-      changed_by: selectedAgent.profile.id,
+      changed_by: user.id,
       note: 'Status updated by admin',
     });
     setSelectedAgent({ ...selectedAgent, application: { ...selectedAgent.application, status: newStatus } });
@@ -323,7 +323,10 @@ export default function AdminDashboard() {
     if (!addCompanyForm.name.trim()) { setFormError('Company name is required.'); return; }
     setAddCompanyLoading(true);
     const { error } = await supabase.from('companies').insert(addCompanyForm);
-    if (error) setFormError(error.message);
+    if (error) {
+      console.error('Add company failed', error);
+      setFormError('We could not save this company right now. Please try again.');
+    }
     else {
       setShowAddCompany(false);
       setAddCompanyForm({ name: '', industry: '', contact_name: '', contact_email: '', priority: 'medium' });
