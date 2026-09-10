@@ -137,14 +137,14 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
       <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-white/8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center shadow-lg shadow-sky-500/30">
+            <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/30">
               <Headset size={18} className="text-white" />
             </div>
             <div className="flex items-baseline gap-1.5">
               <span className="text-white font-bold text-lg tracking-tight">Connect</span>
-              <span className="text-sky-400 font-bold text-lg tracking-tight">Care</span>
+              <span className="text-indigo-400 font-bold text-lg tracking-tight">Care</span>
             </div>
-            <span className="hidden sm:block ml-2 px-2 py-0.5 bg-sky-500/10 border border-sky-500/20 rounded-md text-xs font-medium text-sky-400 tracking-wide">
+            <span className="hidden sm:block ml-2 px-2 py-0.5 bg-indigo-500/10 border border-indigo-500/20 rounded-md text-xs font-medium text-indigo-400 tracking-wide">
               BPO SERVICES
             </span>
           </div>
@@ -167,7 +167,7 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
             </button>
             <button
               onClick={onApply}
-              className="flex items-center gap-1.5 px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white text-sm font-semibold rounded-lg transition-all shadow-lg shadow-sky-500/20"
+              className="flex items-center gap-1.5 px-4 py-2 bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-semibold rounded-lg transition-all shadow-lg shadow-indigo-500/20"
             >
               Become an Agent
               <ArrowRight size={15} />
@@ -202,7 +202,7 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
             </button>
             <button
               onClick={() => { setMobileNavOpen(false); onApply(); }}
-              className="flex items-center gap-1.5 px-4 py-2.5 bg-sky-500 hover:bg-sky-400 text-white text-sm font-semibold rounded-lg transition-all"
+              className="flex items-center gap-1.5 px-4 py-2.5 bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-semibold rounded-lg transition-all"
             >
               Become an Agent
               <ArrowRight size={15} />
@@ -213,17 +213,17 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
 
       {/* ─── Hero ─── */}
       <section className="relative overflow-hidden pt-32 pb-20">
-        <div className="absolute inset-0 bg-gradient-to-br from-sky-900/30 via-slate-950 to-slate-950" />
-        <div className="absolute top-0 left-1/4 w-[600px] h-[400px] bg-sky-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/30 via-slate-950 to-slate-950" />
+        <div className="absolute top-0 left-1/4 w-[600px] h-[400px] bg-indigo-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
         <div className="absolute top-20 right-1/4 w-[500px] h-[300px] bg-cyan-500/5 rounded-full blur-3xl" />
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-sky-500/10 border border-sky-500/20 rounded-full text-sky-400 text-xs font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-indigo-400 text-xs font-medium mb-6">
             <Globe2 size={14} />
             Professional Virtual Call Center & BPO Services
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
             Premium BPO Services.<br />
-            <span className="text-sky-400">Flexible Remote Careers.</span>
+            <span className="text-indigo-400">Flexible Remote Careers.</span>
           </h1>
           <p className="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto mb-4">
             We connect companies with skilled virtual call-center professionals — and help people find rewarding work-from-home opportunities that fit their lives.
@@ -234,7 +234,7 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
               onClick={() => scrollTo('inquiry')}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-xl transition-all shadow-lg shadow-sky-500/25"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 bg-indigo-500 hover:bg-indigo-400 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/25"
             >
               Get a Quote
               <ArrowRight size={18} />
@@ -258,7 +258,7 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
               { icon: Users, label: 'Flexible Scaling' },
             ].map(({ icon: Icon, label }) => (
               <div key={label} className="flex items-center justify-center gap-2.5 bg-slate-900/60 border border-white/8 rounded-xl py-4 px-3">
-                <Icon size={18} className="text-sky-400 shrink-0" />
+                <Icon size={18} className="text-indigo-400 shrink-0" />
                 <span className="text-slate-300 text-sm font-medium">{label}</span>
               </div>
             ))}
@@ -278,10 +278,10 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
           {SERVICES.map(({ icon: Icon, title, desc }) => (
             <div
               key={title}
-              className="group bg-slate-900/60 border border-white/8 rounded-2xl p-6 hover:border-sky-500/30 hover:bg-slate-900/80 transition-all duration-200"
+              className="group bg-slate-900/60 border border-white/8 rounded-2xl p-6 hover:border-indigo-500/30 hover:bg-slate-900/80 transition-all duration-200"
             >
-              <div className="w-12 h-12 rounded-xl bg-sky-500/10 flex items-center justify-center mb-4 group-hover:bg-sky-500/20 transition-colors">
-                <Icon size={22} className="text-sky-400" />
+              <div className="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center mb-4 group-hover:bg-indigo-500/20 transition-colors">
+                <Icon size={22} className="text-indigo-400" />
               </div>
               <h3 className="text-white font-semibold text-base mb-2">{title}</h3>
               <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
@@ -302,16 +302,16 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
           {/* For Companies */}
           <div className="bg-slate-900/60 border border-white/8 rounded-2xl p-7">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-sky-500/15 flex items-center justify-center">
-                <Building2 size={20} className="text-sky-400" />
+              <div className="w-10 h-10 rounded-xl bg-indigo-500/15 flex items-center justify-center">
+                <Building2 size={20} className="text-indigo-400" />
               </div>
               <h3 className="text-white font-bold text-lg">For Companies</h3>
             </div>
             <div className="space-y-4">
               {CLIENT_BENEFITS.map(({ icon: Icon, title, desc }) => (
                 <div key={title} className="flex gap-3.5">
-                  <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center shrink-0">
-                    <Icon size={17} className="text-sky-400" />
+                  <div className="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center shrink-0">
+                    <Icon size={17} className="text-indigo-400" />
                   </div>
                   <div>
                     <p className="text-white font-medium text-sm mb-0.5">{title}</p>
@@ -349,11 +349,11 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
 
       {/* ─── Client Inquiry Form ─── */}
       <section id="inquiry" className="relative overflow-hidden py-20">
-        <div className="absolute inset-0 bg-gradient-to-br from-sky-950/40 via-slate-950 to-slate-950" />
-        <div className="absolute bottom-0 right-1/3 w-[500px] h-[300px] bg-sky-500/8 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-950/40 via-slate-950 to-slate-950" />
+        <div className="absolute bottom-0 right-1/3 w-[500px] h-[300px] bg-indigo-500/8 rounded-full blur-3xl" />
         <div className="relative max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-sky-500/10 border border-sky-500/20 rounded-full text-sky-400 text-xs font-medium mb-5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-indigo-400 text-xs font-medium mb-5">
               <Mail size={14} />
               Get in Touch
             </div>
@@ -384,7 +384,7 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                    Company Name <span className="text-sky-400">*</span>
+                    Company Name <span className="text-indigo-400">*</span>
                   </label>
                   <input
                     type="text"
@@ -392,12 +392,12 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
                     value={form.company_name}
                     onChange={(e) => setForm((f) => ({ ...f, company_name: e.target.value }))}
                     placeholder="Acme Corp"
-                    className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
+                    className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                    Your Name <span className="text-sky-400">*</span>
+                    Your Name <span className="text-indigo-400">*</span>
                   </label>
                   <input
                     type="text"
@@ -405,7 +405,7 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
                     value={form.contact_name}
                     onChange={(e) => setForm((f) => ({ ...f, contact_name: e.target.value }))}
                     placeholder="John Doe"
-                    className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
+                    className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                   />
                 </div>
               </div>
@@ -413,7 +413,7 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                    Work Email <span className="text-sky-400">*</span>
+                    Work Email <span className="text-indigo-400">*</span>
                   </label>
                   <input
                     type="email"
@@ -421,7 +421,7 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
                     value={form.email}
                     onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
                     placeholder="john@acme.com"
-                    className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
+                    className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                   />
                 </div>
                 <div>
@@ -433,21 +433,21 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
                     value={form.phone}
                     onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
                     placeholder="+1 (555) 123-4567"
-                    className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
+                    className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                   />
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                  Service of Interest <span className="text-sky-400">*</span>
+                  Service of Interest <span className="text-indigo-400">*</span>
                 </label>
                 <div className="relative">
                   <select
                     required
                     value={form.service_interest}
                     onChange={(e) => setForm((f) => ({ ...f, service_interest: e.target.value }))}
-                    className="w-full bg-slate-800 border border-white/10 text-white rounded-xl px-4 py-2.5 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all appearance-none"
+                    className="w-full bg-slate-800 border border-white/10 text-white rounded-xl px-4 py-2.5 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all appearance-none"
                   >
                     <option value="">Select a service...</option>
                     {SERVICE_OPTIONS.map((s) => (
@@ -469,7 +469,7 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
                   value={form.message}
                   onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
                   placeholder="Describe your business, the volume of support you need, timelines, or any questions you have..."
-                  className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all resize-none"
+                  className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
                 />
               </div>
 
@@ -482,7 +482,7 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full flex items-center justify-center gap-2 px-7 py-3.5 bg-sky-500 hover:bg-sky-400 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all shadow-lg shadow-sky-500/25"
+                className="w-full flex items-center justify-center gap-2 px-7 py-3.5 bg-indigo-500 hover:bg-indigo-400 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/25"
               >
                 {submitting ? (
                   <><Loader2 size={18} className="animate-spin" /> Sending...</>
@@ -547,12 +547,12 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             <div>
               <div className="flex items-center gap-2.5 mb-4">
-                <div className="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center shadow-lg shadow-sky-500/30">
+                <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/30">
                   <Headset size={18} className="text-white" />
                 </div>
                 <div className="flex items-baseline gap-1.5">
                   <span className="text-white font-bold text-lg tracking-tight">Connect</span>
-                  <span className="text-sky-400 font-bold text-lg tracking-tight">Care</span>
+                  <span className="text-indigo-400 font-bold text-lg tracking-tight">Care</span>
                 </div>
               </div>
               <p className="text-slate-500 text-sm max-w-xs">
@@ -566,7 +566,7 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
                   <button
                     key={link.id}
                     onClick={() => scrollTo(link.id)}
-                    className="block text-slate-500 hover:text-sky-400 text-sm transition-colors"
+                    className="block text-slate-500 hover:text-indigo-400 text-sm transition-colors"
                   >
                     {link.label}
                   </button>
@@ -578,25 +578,25 @@ export default function RecruitmentLanding({ onApply, onSignIn, onPrivacy }: Pro
               <div className="space-y-2">
                 <button
                   onClick={() => scrollTo('inquiry')}
-                  className="block text-slate-500 hover:text-sky-400 text-sm transition-colors"
+                  className="block text-slate-500 hover:text-indigo-400 text-sm transition-colors"
                 >
                   Request a Quote
                 </button>
                 <button
                   onClick={onApply}
-                  className="block text-slate-500 hover:text-sky-400 text-sm transition-colors"
+                  className="block text-slate-500 hover:text-indigo-400 text-sm transition-colors"
                 >
                   Apply as Agent
                 </button>
                 <button
                   onClick={onSignIn}
-                  className="block text-slate-500 hover:text-sky-400 text-sm transition-colors"
+                  className="block text-slate-500 hover:text-indigo-400 text-sm transition-colors"
                 >
                   Agent Sign In
                 </button>
                 <button
                   onClick={onPrivacy}
-                  className="block text-slate-500 hover:text-sky-400 text-sm transition-colors"
+                  className="block text-slate-500 hover:text-indigo-400 text-sm transition-colors"
                 >
                   Privacy Policy
                 </button>

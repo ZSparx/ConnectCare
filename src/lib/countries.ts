@@ -357,7 +357,7 @@ export const COUNTRY_STATUS_CONFIG: Record<string, { label: string; color: strin
 };
 
 export const APPLICATION_STATUS_CONFIG: Record<string, { label: string; color: string }> = {
-  submitted: { label: 'Submitted', color: 'text-sky-400 bg-sky-500/10 border-sky-500/20' },
+  submitted: { label: 'Submitted', color: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20' },
   under_review: { label: 'Under Review', color: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20' },
   interview: { label: 'Interview', color: 'text-violet-400 bg-violet-500/10 border-violet-500/20' },
   info_required: { label: 'Additional Information Required', color: 'text-amber-400 bg-amber-500/10 border-amber-500/20' },

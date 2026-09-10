@@ -392,7 +392,7 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
           <p className="text-slate-500 text-sm mb-8">
             You can track your application status from your dashboard. Our recruiting team will reach out if your profile matches an available opportunity.
           </p>
-          <button onClick={onDone} className="px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-xl transition-all shadow-lg shadow-sky-500/25">
+          <button onClick={onDone} className="px-6 py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/25">
             Go to Dashboard
           </button>
         </div>
@@ -404,10 +404,10 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
         <div className="max-w-md text-center">
-          <AlertCircle size={40} className="text-sky-400 mx-auto mb-4" />
+          <AlertCircle size={40} className="text-indigo-400 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-white mb-2">Application already submitted</h2>
           <p className="text-slate-400 text-sm mb-6">You have already submitted an application. You can track its status from your dashboard.</p>
-          <button onClick={onDone} className="px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-xl transition-all">
+          <button onClick={onDone} className="px-6 py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-semibold rounded-xl transition-all">
             Go to Dashboard
           </button>
         </div>
@@ -432,13 +432,13 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
             <div key={i} className="flex items-center gap-1 shrink-0">
               <div className={`flex flex-col items-center gap-1 ${i <= step ? 'opacity-100' : 'opacity-40'}`}>
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                  i === step ? 'bg-sky-500 text-white' : i < step ? 'bg-sky-500/20 text-sky-400' : 'bg-slate-800 text-slate-500'
+                  i === step ? 'bg-indigo-500 text-white' : i < step ? 'bg-indigo-500/20 text-indigo-400' : 'bg-slate-800 text-slate-500'
                 }`}>
                   {i < step ? <CheckCircle2 size={16} /> : <s.icon size={15} />}
                 </div>
                 <span className="text-[10px] text-slate-500 hidden sm:block">{s.label}</span>
               </div>
-              {i < STEPS.length - 1 && <div className={`w-4 h-px ${i < step ? 'bg-sky-500/40' : 'bg-slate-800'}`} />}
+              {i < STEPS.length - 1 && <div className={`w-4 h-px ${i < step ? 'bg-indigo-500/40' : 'bg-slate-800'}`} />}
             </div>
           ))}
         </div>
@@ -495,7 +495,7 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
                           key={c.code}
                           type="button"
                           onClick={() => selectCountry(c.name, c.code)}
-                          className="w-full flex items-center justify-between px-4 py-2.5 text-sm text-slate-300 hover:bg-sky-500/10 hover:text-white transition-colors text-left"
+                          className="w-full flex items-center justify-between px-4 py-2.5 text-sm text-slate-300 hover:bg-indigo-500/10 hover:text-white transition-colors text-left"
                         >
                           <span>{c.name}</span>
                           <span className="text-slate-600 text-xs">{c.code}</span>
@@ -636,7 +636,7 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
                   )}
                 </div>
               ))}
-              <button type="button" onClick={() => setLanguages((prev) => [...prev, { language: '', proficiency: 'intermediate', isPrimaryLocal: false }])} className="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors">
+              <button type="button" onClick={() => setLanguages((prev) => [...prev, { language: '', proficiency: 'intermediate', isPrimaryLocal: false }])} className="text-indigo-400 hover:text-indigo-300 text-sm font-medium transition-colors">
                 + Add another language
               </button>
             </div>
@@ -653,7 +653,7 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
                 <Toggle label={hasComputer ? 'Yes' : 'No'} checked={hasComputer} onChange={setHasComputer} />
               </div>
               {hasComputer && (
-                <div className="grid sm:grid-cols-2 gap-4 pl-3 border-l-2 border-sky-500/20">
+                <div className="grid sm:grid-cols-2 gap-4 pl-3 border-l-2 border-indigo-500/20">
                   <Field label="Manufacturer"><TextInput value={computerManufacturer} onChange={(e) => setComputerManufacturer(e.target.value)} placeholder="e.g. Dell, HP, Lenovo" /></Field>
                   <Field label="Model"><TextInput value={computerModel} onChange={(e) => setComputerModel(e.target.value)} placeholder="e.g. XPS 15" /></Field>
                   <Field label="Operating System"><TextInput value={os} onChange={(e) => setOs(e.target.value)} placeholder="e.g. Windows 11, macOS 14" /></Field>
@@ -667,7 +667,7 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
                 <Toggle label={hasHeadset ? 'Yes' : 'No'} checked={hasHeadset} onChange={setHasHeadset} />
               </div>
               {hasHeadset && (
-                <div className="pl-3 border-l-2 border-sky-500/20">
+                <div className="pl-3 border-l-2 border-indigo-500/20">
                   <Field label="Headset manufacturer / model"><TextInput value={headsetModel} onChange={(e) => setHeadsetModel(e.target.value)} placeholder="e.g. Jabra Evolve2 65" /></Field>
                 </div>
               )}
@@ -689,7 +689,7 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
                 <Toggle label={hasBackupPower ? 'Yes' : 'No'} checked={hasBackupPower} onChange={setHasBackupPower} />
               </div>
               {hasBackupPower && (
-                <div className="pl-3 border-l-2 border-sky-500/20">
+                <div className="pl-3 border-l-2 border-indigo-500/20">
                   <Field label="Description"><TextArea value={backupPowerDesc} onChange={(e) => setBackupPowerDesc(e.target.value)} rows={2} placeholder="e.g. UPS, generator" /></Field>
                 </div>
               )}
@@ -722,7 +722,7 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
                 <Toggle label={hasBackupInternet ? 'Yes' : 'No'} checked={hasBackupInternet} onChange={setHasBackupInternet} />
               </div>
               {hasBackupInternet && (
-                <div className="pl-3 border-l-2 border-sky-500/20">
+                <div className="pl-3 border-l-2 border-indigo-500/20">
                   <Field label="Backup Internet Provider"><TextInput value={backupProvider} onChange={(e) => setBackupProvider(e.target.value)} placeholder="e.g. Globe, Verizon" /></Field>
                 </div>
               )}
@@ -798,15 +798,15 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
               <h2 className="text-lg font-bold text-white mb-1">Verification & Consent</h2>
               <p className="text-slate-500 text-sm mb-4">Please review and acknowledge the following.</p>
               <label className="flex items-start gap-3 cursor-pointer">
-                <input type="checkbox" checked={consentAccuracy} onChange={(e) => setConsentAccuracy(e.target.checked)} className="mt-0.5 w-4 h-4 rounded border-slate-600 text-sky-500 focus:ring-sky-500" />
+                <input type="checkbox" checked={consentAccuracy} onChange={(e) => setConsentAccuracy(e.target.checked)} className="mt-0.5 w-4 h-4 rounded border-slate-600 text-indigo-500 focus:ring-indigo-500" />
                 <span className="text-sm text-slate-300">I confirm that the information I have provided is accurate and complete to the best of my knowledge.</span>
               </label>
               <label className="flex items-start gap-3 cursor-pointer">
-                <input type="checkbox" checked={consentPrivacy} onChange={(e) => setConsentPrivacy(e.target.checked)} className="mt-0.5 w-4 h-4 rounded border-slate-600 text-sky-500 focus:ring-sky-500" />
+                <input type="checkbox" checked={consentPrivacy} onChange={(e) => setConsentPrivacy(e.target.checked)} className="mt-0.5 w-4 h-4 rounded border-slate-600 text-indigo-500 focus:ring-indigo-500" />
                 <span className="text-sm text-slate-300">I have read and agree to the Privacy Policy regarding how my personal information is collected, used, and shared.</span>
               </label>
               <label className="flex items-start gap-3 cursor-pointer">
-                <input type="checkbox" checked={consentContact} onChange={(e) => setConsentContact(e.target.checked)} className="mt-0.5 w-4 h-4 rounded border-slate-600 text-sky-500 focus:ring-sky-500" />
+                <input type="checkbox" checked={consentContact} onChange={(e) => setConsentContact(e.target.checked)} className="mt-0.5 w-4 h-4 rounded border-slate-600 text-indigo-500 focus:ring-indigo-500" />
                 <span className="text-sm text-slate-300">I consent to be contacted about my application and potential opportunities that match my profile.</span>
               </label>
               <div className="bg-amber-500/5 border border-amber-500/15 rounded-xl p-4 mt-4">
@@ -858,7 +858,7 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
               <button
                 onClick={next}
                 disabled={!canProceed()}
-                className="flex items-center gap-1.5 px-5 py-2.5 bg-sky-500 hover:bg-sky-400 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl text-sm font-semibold transition-all"
+                className="flex items-center gap-1.5 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-400 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl text-sm font-semibold transition-all"
               >
                 Next <ArrowRight size={16} />
               </button>

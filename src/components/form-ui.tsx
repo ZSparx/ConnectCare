@@ -15,7 +15,7 @@ export function Field({
     <div>
       <label className="block text-sm font-medium text-slate-300 mb-1.5">
         {label}
-        {required && <span className="text-sky-400"> *</span>}
+        {required && <span className="text-indigo-400"> *</span>}
       </label>
       {children}
       {hint && <p className="text-slate-600 text-xs mt-1">{hint}</p>}
@@ -24,7 +24,7 @@ export function Field({
 }
 
 export const inputClass =
-  'w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all';
+  'w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all';
 
 export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} className={inputClass} />;
@@ -68,12 +68,12 @@ export function CheckboxGroup({
             onClick={() => onToggle(opt)}
             className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border text-sm text-left transition-all ${
               isSel
-                ? 'bg-sky-500/15 border-sky-500/40 text-white'
+                ? 'bg-indigo-500/15 border-indigo-500/40 text-white'
                 : 'bg-slate-800 border-white/10 text-slate-400 hover:border-white/20'
             }`}
           >
             <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${
-              isSel ? 'bg-sky-500 border-sky-500' : 'border-slate-600'
+              isSel ? 'bg-indigo-500 border-indigo-500' : 'border-slate-600'
             }`}>
               {isSel && (
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
@@ -107,7 +107,7 @@ export function RadioGroup({
           onClick={() => onChange(opt.value)}
           className={`px-4 py-2.5 rounded-xl border text-sm transition-all ${
             value === opt.value
-              ? 'bg-sky-500/15 border-sky-500/40 text-white'
+              ? 'bg-indigo-500/15 border-indigo-500/40 text-white'
               : 'bg-slate-800 border-white/10 text-slate-400 hover:border-white/20'
           }`}
         >
@@ -134,7 +134,7 @@ export function Toggle({
       className="flex items-center gap-3 group"
     >
       <div className={`w-5 h-5 rounded-md border flex items-center justify-center shrink-0 transition-all ${
-        checked ? 'bg-sky-500 border-sky-500' : 'border-slate-600 group-hover:border-slate-500'
+        checked ? 'bg-indigo-500 border-indigo-500' : 'border-slate-600 group-hover:border-slate-500'
       }`}>
         {checked && (
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">

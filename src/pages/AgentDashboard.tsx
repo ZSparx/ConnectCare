@@ -36,7 +36,7 @@ import { getStatusLabel, getStatusColor } from '../lib/countries';
 const PRIORITY_CONFIG = {
   critical: { label: 'Critical', color: 'text-red-400 bg-red-500/10 border-red-500/20' },
   high: { label: 'High', color: 'text-orange-400 bg-orange-500/10 border-orange-500/20' },
-  medium: { label: 'Medium', color: 'text-sky-400 bg-sky-500/10 border-sky-500/20' },
+  medium: { label: 'Medium', color: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20' },
   low: { label: 'Low', color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' },
 };
 
@@ -137,9 +137,9 @@ export default function AgentDashboard({ onStartApplication }: Props) {
     <div className="min-h-screen bg-slate-950">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Welcome banner */}
-        <div className="bg-gradient-to-r from-sky-600/20 to-slate-800/40 border border-sky-500/20 rounded-2xl p-6 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="bg-gradient-to-r from-indigo-600/20 to-slate-800/40 border border-indigo-500/20 rounded-2xl p-6 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <p className="text-sky-400 text-sm font-medium mb-0.5">Agent Portal</p>
+            <p className="text-indigo-400 text-sm font-medium mb-0.5">Agent Portal</p>
             <h2 className="text-2xl font-bold text-white">
               {profile?.full_name ? `Hello, ${profile.full_name.split(' ')[0]}` : 'Hello'}
             </h2>
@@ -177,14 +177,14 @@ export default function AgentDashboard({ onStartApplication }: Props) {
         {/* Application status section */}
         {!hasApplication ? (
           <div className="bg-slate-900/60 border border-white/8 rounded-2xl p-8 text-center mb-8">
-            <FileText size={40} className="text-sky-400 mx-auto mb-4" />
+            <FileText size={40} className="text-indigo-400 mx-auto mb-4" />
             <h3 className="text-lg font-bold text-white mb-2">No application on file</h3>
             <p className="text-slate-400 text-sm mb-6 max-w-md mx-auto">
               Submit your application to join our global virtual call-center agent pool and be considered for potential opportunities.
             </p>
             <button
               onClick={onStartApplication}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-xl transition-all shadow-lg shadow-sky-500/25"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/25"
             >
               <FileText size={18} /> Apply to Become an Agent
             </button>
@@ -195,7 +195,7 @@ export default function AgentDashboard({ onStartApplication }: Props) {
             <div className="bg-slate-900/60 border border-white/8 rounded-2xl p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-base font-semibold text-white flex items-center gap-2">
-                  <FileText size={18} className="text-sky-400" />
+                  <FileText size={18} className="text-indigo-400" />
                   Application Progress
                 </h3>
                 <span className={`text-xs px-2.5 py-1 rounded-lg border ${getStatusColor(application.status)}`}>
@@ -210,7 +210,7 @@ export default function AgentDashboard({ onStartApplication }: Props) {
                 </div>
                 <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-sky-500 to-emerald-500 rounded-full transition-all duration-500"
+                    className="h-full bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-full transition-all duration-500"
                     style={{ width: `${completion}%` }}
                   />
                 </div>
@@ -242,7 +242,7 @@ export default function AgentDashboard({ onStartApplication }: Props) {
                 <DetailCard icon={Star} title="Skills">
                   <div className="flex flex-wrap gap-1.5">
                     {skills.map((s) => (
-                      <span key={s.id} className="text-xs px-2 py-0.5 bg-sky-500/10 border border-sky-500/20 rounded-md text-sky-300">{s.skill}</span>
+                      <span key={s.id} className="text-xs px-2 py-0.5 bg-indigo-500/10 border border-indigo-500/20 rounded-md text-indigo-300">{s.skill}</span>
                     ))}
                   </div>
                 </DetailCard>
@@ -277,7 +277,7 @@ export default function AgentDashboard({ onStartApplication }: Props) {
             {/* Messages */}
             <div className="bg-slate-900/60 border border-white/8 rounded-2xl p-6">
               <h3 className="text-base font-semibold text-white flex items-center gap-2 mb-4">
-                <MessageSquare size={18} className="text-sky-400" />
+                <MessageSquare size={18} className="text-indigo-400" />
                 Recruiter Messages
               </h3>
               {messages.length === 0 ? (
@@ -288,7 +288,7 @@ export default function AgentDashboard({ onStartApplication }: Props) {
                     <div key={m.id} className={`flex ${m.sender_id === profile?.id ? 'justify-end' : 'justify-start'}`}>
                       <div className={`max-w-[75%] rounded-xl px-4 py-2.5 text-sm ${
                         m.sender_id === profile?.id
-                          ? 'bg-sky-500/15 text-slate-200'
+                          ? 'bg-indigo-500/15 text-slate-200'
                           : 'bg-slate-800 text-slate-300'
                       }`}>
                         <p>{m.body}</p>
@@ -305,12 +305,12 @@ export default function AgentDashboard({ onStartApplication }: Props) {
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
                   placeholder="Type a message to your recruiter..."
-                  className="flex-1 bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="flex-1 bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 <button
                   onClick={sendMessage}
                   disabled={!newMessage.trim() || sendingMessage}
-                  className="px-4 py-2.5 bg-sky-500 hover:bg-sky-400 disabled:opacity-40 text-white rounded-xl transition-all"
+                  className="px-4 py-2.5 bg-indigo-500 hover:bg-indigo-400 disabled:opacity-40 text-white rounded-xl transition-all"
                 >
                   {sendingMessage ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
                 </button>
@@ -322,11 +322,11 @@ export default function AgentDashboard({ onStartApplication }: Props) {
         {/* Assignments */}
         <div>
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <Building2 size={20} className="text-sky-400" />
+            <Building2 size={20} className="text-indigo-400" />
             Your Company Assignments
           </h3>
           {loading ? (
-            <div className="flex items-center justify-center py-20"><Loader2 size={28} className="animate-spin text-sky-500" /></div>
+            <div className="flex items-center justify-center py-20"><Loader2 size={28} className="animate-spin text-indigo-500" /></div>
           ) : assignments.length === 0 ? (
             <div className="text-center py-16 bg-slate-900/50 border border-white/5 rounded-2xl">
               <AlertCircle size={36} className="text-slate-600 mx-auto mb-3" />
@@ -339,11 +339,11 @@ export default function AgentDashboard({ onStartApplication }: Props) {
                 const company = a.companies!;
                 const pCfg = PRIORITY_CONFIG[company.priority];
                 return (
-                  <div key={a.id} className="bg-slate-900/60 border border-white/8 rounded-2xl p-5 hover:border-sky-500/30 transition-all">
+                  <div key={a.id} className="bg-slate-900/60 border border-white/8 rounded-2xl p-5 hover:border-indigo-500/30 transition-all">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-sky-500/10 border border-sky-500/20 rounded-xl flex items-center justify-center">
-                          <Building2 size={18} className="text-sky-400" />
+                        <div className="w-10 h-10 bg-indigo-500/10 border border-indigo-500/20 rounded-xl flex items-center justify-center">
+                          <Building2 size={18} className="text-indigo-400" />
                         </div>
                         <div>
                           <h4 className="font-semibold text-white text-sm">{company.name}</h4>
@@ -387,7 +387,7 @@ function DetailCard({ icon: Icon, title, children }: { icon: React.ElementType; 
   return (
     <div className="bg-slate-900/60 border border-white/8 rounded-2xl p-5">
       <div className="flex items-center gap-2 mb-3">
-        <Icon size={16} className="text-sky-400" />
+        <Icon size={16} className="text-indigo-400" />
         <h4 className="text-white font-semibold text-sm">{title}</h4>
       </div>
       {children}

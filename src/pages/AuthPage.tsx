@@ -86,10 +86,10 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
             disabled={!onRecruitment}
             className="flex items-center gap-2.5 group disabled:cursor-default"
           >
-            <div className="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center group-hover:bg-sky-400 transition-colors">
+            <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center group-hover:bg-indigo-400 transition-colors">
               <Headset size={18} className="text-white" />
             </div>
-            <span className="text-white font-semibold text-xl tracking-tight group-hover:text-sky-300 transition-colors">Connect Care</span>
+            <span className="text-white font-semibold text-xl tracking-tight group-hover:text-indigo-300 transition-colors">Connect Care</span>
           </button>
         </header>
 
@@ -127,7 +127,7 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
                       value={resetEmail}
                       onChange={(e) => setResetEmail(e.target.value)}
                       placeholder="you@example.com"
-                      className="w-full bg-white/5 border border-white/10 text-white placeholder-slate-500 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
+                      className="w-full bg-white/5 border border-white/10 text-white placeholder-slate-500 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                     />
                   </div>
                   {error && (
@@ -136,7 +136,7 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
                   <button
                     type="submit"
                     disabled={resetLoading}
-                    className="w-full bg-sky-500 hover:bg-sky-400 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-sky-500/25"
+                    className="w-full bg-indigo-500 hover:bg-indigo-400 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25"
                   >
                     {resetLoading && <Loader2 size={16} className="animate-spin" />}
                     Send Reset Link
@@ -147,7 +147,7 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
               <div className="text-center mt-4 pt-4 border-t border-white/5">
                 <button
                   onClick={() => { setShowReset(false); setError(''); }}
-                  className="inline-flex items-center gap-1.5 text-slate-500 hover:text-sky-400 text-sm transition-colors"
+                  className="inline-flex items-center gap-1.5 text-slate-500 hover:text-indigo-400 text-sm transition-colors"
                 >
                   <ArrowLeft size={14} /> Back to Sign In
                 </button>
@@ -169,18 +169,18 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
             disabled={!onRecruitment}
             className="flex items-center gap-2.5 group disabled:cursor-default"
           >
-            <div className="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center group-hover:bg-sky-400 transition-colors">
+            <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center group-hover:bg-indigo-400 transition-colors">
               <Headset size={18} className="text-white" />
             </div>
-            <span className="text-white font-semibold text-xl tracking-tight group-hover:text-sky-300 transition-colors">Connect Care</span>
+            <span className="text-white font-semibold text-xl tracking-tight group-hover:text-indigo-300 transition-colors">Connect Care</span>
           </button>
         </header>
 
         <div className="flex-1 flex items-center justify-center px-4 py-12">
           <div className="w-full max-w-md">
             <div className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm text-center">
-              <div className="w-14 h-14 rounded-full bg-sky-500/15 flex items-center justify-center mx-auto mb-4">
-                <Mail size={28} className="text-sky-400" />
+              <div className="w-14 h-14 rounded-full bg-indigo-500/15 flex items-center justify-center mx-auto mb-4">
+                <Mail size={28} className="text-indigo-400" />
               </div>
               <h2 className="text-xl font-bold text-white mb-2">Check your email to confirm</h2>
               <p className="text-slate-400 text-sm mb-6">
@@ -192,13 +192,13 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
               <div className="flex flex-col gap-3">
                 <button
                   onClick={() => { setSignUpSuccess(false); setMode('signin'); }}
-                  className="w-full bg-sky-500 hover:bg-sky-400 text-white font-semibold py-3 rounded-xl transition-all shadow-lg shadow-sky-500/25"
+                  className="w-full bg-indigo-500 hover:bg-indigo-400 text-white font-semibold py-3 rounded-xl transition-all shadow-lg shadow-indigo-500/25"
                 >
                   Go to Sign In
                 </button>
                 <button
                   onClick={onRecruitment}
-                  className="inline-flex items-center justify-center gap-1.5 text-slate-500 hover:text-sky-400 text-sm transition-colors"
+                  className="inline-flex items-center justify-center gap-1.5 text-slate-500 hover:text-indigo-400 text-sm transition-colors"
                 >
                   <ArrowLeft size={14} /> Back to home page
                 </button>
@@ -219,10 +219,10 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
           disabled={!onRecruitment}
           className="flex items-center gap-2.5 group disabled:cursor-default"
         >
-          <div className="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center group-hover:bg-sky-400 transition-colors">
+          <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center group-hover:bg-indigo-400 transition-colors">
             <Headset size={18} className="text-white" />
           </div>
-          <span className="text-white font-semibold text-xl tracking-tight group-hover:text-sky-300 transition-colors">Connect Care</span>
+          <span className="text-white font-semibold text-xl tracking-tight group-hover:text-indigo-300 transition-colors">Connect Care</span>
         </button>
       </header>
 
@@ -238,7 +238,7 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
                   onClick={() => { setMode(m); setError(''); setInfo(''); }}
                   className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                     mode === m
-                      ? 'bg-sky-500 text-white shadow-lg shadow-sky-500/25'
+                      ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/25'
                       : 'text-slate-400 hover:text-white'
                   }`}
                 >
@@ -268,7 +268,7 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder="Jane Smith"
-                    className="w-full bg-white/5 border border-white/10 text-white placeholder-slate-500 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
+                    className="w-full bg-white/5 border border-white/10 text-white placeholder-slate-500 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                   />
                 </div>
               )}
@@ -283,7 +283,7 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full bg-white/5 border border-white/10 text-white placeholder-slate-500 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
+                  className="w-full bg-white/5 border border-white/10 text-white placeholder-slate-500 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                 />
               </div>
 
@@ -299,7 +299,7 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full bg-white/5 border border-white/10 text-white placeholder-slate-500 rounded-xl px-4 py-3 pr-11 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
+                    className="w-full bg-white/5 border border-white/10 text-white placeholder-slate-500 rounded-xl px-4 py-3 pr-11 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                   />
                   <button
                     type="button"
@@ -316,7 +316,7 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
                   <button
                     type="button"
                     onClick={() => { setShowReset(true); setError(''); setResetEmail(email); }}
-                    className="text-sky-400 hover:text-sky-300 text-xs font-medium transition-colors"
+                    className="text-indigo-400 hover:text-indigo-300 text-xs font-medium transition-colors"
                   >
                     Forgot password?
                   </button>
@@ -330,7 +330,7 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
               )}
 
               {info && (
-                <div className="bg-sky-500/10 border border-sky-500/20 rounded-xl px-4 py-3 text-sky-400 text-sm">
+                <div className="bg-indigo-500/10 border border-indigo-500/20 rounded-xl px-4 py-3 text-indigo-400 text-sm">
                   {info}
                 </div>
               )}
@@ -338,7 +338,7 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-sky-500 hover:bg-sky-400 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-sky-500/25 mt-2"
+                className="w-full bg-indigo-500 hover:bg-indigo-400 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25 mt-2"
               >
                 {loading && <Loader2 size={16} className="animate-spin" />}
                 {mode === 'signin' ? 'Sign In' : 'Create Account'}
@@ -349,7 +349,7 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
               {mode === 'signin' ? "Don't have an account?" : 'Already have an account?'}{' '}
               <button
                 onClick={() => { setMode(mode === 'signin' ? 'signup' : 'signin'); setError(''); setInfo(''); }}
-                className="text-sky-400 hover:text-sky-300 font-medium transition-colors"
+                className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
               >
                 {mode === 'signin' ? 'Sign up' : 'Sign in'}
               </button>
@@ -359,7 +359,7 @@ export default function AuthPage({ onRecruitment }: Props = {}) {
               <div className="text-center mt-4 pt-4 border-t border-white/5">
                 <button
                   onClick={onRecruitment}
-                  className="inline-flex items-center gap-1.5 text-slate-500 hover:text-sky-400 text-sm transition-colors"
+                  className="inline-flex items-center gap-1.5 text-slate-500 hover:text-indigo-400 text-sm transition-colors"
                 >
                   <ArrowLeft size={14} />
                   Back to home page

@@ -45,7 +45,7 @@ import { getStatusLabel, getStatusColor, COUNTRY_STATUS_CONFIG } from '../lib/co
 const PRIORITY_CONFIG = {
   critical: { label: 'Critical', color: 'text-red-400 bg-red-500/10 border-red-500/20' },
   high: { label: 'High', color: 'text-orange-400 bg-orange-500/10 border-orange-500/20' },
-  medium: { label: 'Medium', color: 'text-sky-400 bg-sky-500/10 border-sky-500/20' },
+  medium: { label: 'Medium', color: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20' },
   low: { label: 'Low', color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' },
 };
 
@@ -400,7 +400,7 @@ export default function AdminDashboard() {
         {/* Page header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <p className="text-sky-400 text-sm font-medium mb-0.5">Admin Panel</p>
+            <p className="text-indigo-400 text-sm font-medium mb-0.5">Admin Panel</p>
             <h2 className="text-2xl font-bold text-white">Agent Pool Management</h2>
           </div>
           <div className="flex items-center gap-3">
@@ -418,7 +418,7 @@ export default function AdminDashboard() {
           {TABS.map(({ id, label, icon: Icon }) => (
             <button key={id} onClick={() => setTab(id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap ${
-                tab === id ? 'bg-sky-500 text-white shadow-lg shadow-sky-500/25' : 'text-slate-400 hover:text-white'
+                tab === id ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/25' : 'text-slate-400 hover:text-white'
               }`}>
               <Icon size={15} /> {label}
             </button>
@@ -426,7 +426,7 @@ export default function AdminDashboard() {
         </div>
 
         {loading ? (
-          <div className="flex items-center justify-center py-32"><Loader2 size={32} className="animate-spin text-sky-500" /></div>
+          <div className="flex items-center justify-center py-32"><Loader2 size={32} className="animate-spin text-indigo-500" /></div>
         ) : (
           <>
             {/* OVERVIEW */}
@@ -434,7 +434,7 @@ export default function AdminDashboard() {
               <div className="space-y-8">
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                   {[
-                    { label: 'Total Agents', value: stats.agents, icon: Users, color: 'sky' },
+                    { label: 'Total Agents', value: stats.agents, icon: Users, color: 'indigo' },
                     { label: 'Available Now', value: stats.available, icon: CheckCircle2, color: 'emerald' },
                     { label: 'Companies', value: stats.companies, icon: Building2, color: 'violet' },
                     { label: 'Assignments', value: stats.assignments, icon: UserCheck, color: 'orange' },
@@ -481,7 +481,7 @@ export default function AdminDashboard() {
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                       placeholder="Search by name, country, city, skill, language..."
-                      className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -500,7 +500,7 @@ export default function AdminDashboard() {
 
                 {/* Pool table */}
                 {poolLoading ? (
-                  <div className="flex items-center justify-center py-20"><Loader2 size={28} className="animate-spin text-sky-500" /></div>
+                  <div className="flex items-center justify-center py-20"><Loader2 size={28} className="animate-spin text-indigo-500" /></div>
                 ) : filteredPool.length === 0 ? (
                   <div className="text-center py-16 bg-slate-900/50 border border-white/5 rounded-2xl">
                     <Users size={36} className="text-slate-600 mx-auto mb-3" />
@@ -550,7 +550,7 @@ export default function AdminDashboard() {
                             </td>
                             <td className="px-4 py-3">
                               <div className="flex flex-wrap gap-1 max-w-[150px]">
-                                {d.skills.slice(0, 2).map((s) => <span key={s.id} className="text-xs px-1.5 py-0.5 bg-sky-500/10 text-sky-300 rounded">{s.skill}</span>)}
+                                {d.skills.slice(0, 2).map((s) => <span key={s.id} className="text-xs px-1.5 py-0.5 bg-indigo-500/10 text-indigo-300 rounded">{s.skill}</span>)}
                                 {d.skills.length > 2 && <span className="text-xs text-slate-600">+{d.skills.length - 2}</span>}
                               </div>
                             </td>
@@ -577,10 +577,10 @@ export default function AdminDashboard() {
                   const count = agentAssignmentCount(agent.id);
                   const agentAssigns = assignments.filter((a) => a.agent_id === agent.id);
                   return (
-                    <div key={agent.id} className="bg-slate-900/60 border border-white/8 rounded-2xl p-5 hover:border-sky-500/25 transition-all">
+                    <div key={agent.id} className="bg-slate-900/60 border border-white/8 rounded-2xl p-5 hover:border-indigo-500/25 transition-all">
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-sky-500/15 flex items-center justify-center text-sky-300 font-bold">{agent.full_name?.[0] ?? '?'}</div>
+                          <div className="w-10 h-10 rounded-xl bg-indigo-500/15 flex items-center justify-center text-indigo-300 font-bold">{agent.full_name?.[0] ?? '?'}</div>
                           <div>
                             <p className="font-semibold text-white text-sm">{agent.full_name || 'Unnamed Agent'}</p>
                             <p className="text-slate-500 text-xs mt-0.5">Agent</p>
@@ -617,7 +617,7 @@ export default function AdminDashboard() {
                       </div>
                       <button onClick={() => { setAssignModal({ agent, existingIds: agentAssigns.map((a) => a.company_id) }); setSelectedCompanyId(''); setAssignNote(''); }}
                         disabled={availableToAssign.length === 0 && agentAssignmentCount(agent.id) === companies.length}
-                        className="w-full flex items-center justify-center gap-1.5 py-2 bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/20 text-sky-400 rounded-xl text-xs font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                        className="w-full flex items-center justify-center gap-1.5 py-2 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 text-indigo-400 rounded-xl text-xs font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed">
                         <Plus size={13} /> Assign Company
                       </button>
                     </div>
@@ -631,7 +631,7 @@ export default function AdminDashboard() {
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-base font-semibold text-white">All Companies</h3>
-                  <button onClick={() => setShowAddCompany(true)} className="flex items-center gap-1.5 px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-sky-500/20">
+                  <button onClick={() => setShowAddCompany(true)} className="flex items-center gap-1.5 px-4 py-2 bg-indigo-500 hover:bg-indigo-400 text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-indigo-500/20">
                     <Plus size={15} /> Add Company
                   </button>
                 </div>
@@ -640,10 +640,10 @@ export default function AdminDashboard() {
                     const pCfg = PRIORITY_CONFIG[company.priority];
                     const count = companyAgentCount(company.id);
                     return (
-                      <div key={company.id} className="bg-slate-900/60 border border-white/8 rounded-2xl p-5 hover:border-sky-500/25 transition-all">
+                      <div key={company.id} className="bg-slate-900/60 border border-white/8 rounded-2xl p-5 hover:border-indigo-500/25 transition-all">
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-sky-500/10 border border-sky-500/20 rounded-xl flex items-center justify-center"><Building2 size={18} className="text-sky-400" /></div>
+                            <div className="w-10 h-10 bg-indigo-500/10 border border-indigo-500/20 rounded-xl flex items-center justify-center"><Building2 size={18} className="text-indigo-400" /></div>
                             <div><p className="font-semibold text-white text-sm">{company.name}</p><p className="text-slate-500 text-xs mt-0.5">{company.industry}</p></div>
                           </div>
                           <span className={`text-xs font-medium px-2 py-0.5 rounded-lg border ${pCfg.color} flex items-center gap-1`}><Tag size={10} /> {pCfg.label}</span>
@@ -665,7 +665,7 @@ export default function AdminDashboard() {
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-base font-semibold text-white">Countries</h3>
-                  <button onClick={() => setShowAddCountry(true)} className="flex items-center gap-1.5 px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-sky-500/20">
+                  <button onClick={() => setShowAddCountry(true)} className="flex items-center gap-1.5 px-4 py-2 bg-indigo-500 hover:bg-indigo-400 text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-indigo-500/20">
                     <Plus size={15} /> Add Country
                   </button>
                 </div>
@@ -721,7 +721,7 @@ export default function AdminDashboard() {
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-base font-semibold text-white">Opportunities</h3>
-                  <button onClick={() => setShowAddOpp(true)} className="flex items-center gap-1.5 px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-sky-500/20">
+                  <button onClick={() => setShowAddOpp(true)} className="flex items-center gap-1.5 px-4 py-2 bg-indigo-500 hover:bg-indigo-400 text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-indigo-500/20">
                     <Plus size={15} /> Add Opportunity
                   </button>
                 </div>
@@ -772,7 +772,7 @@ export default function AdminDashboard() {
                   </button>
                 </div>
                 {inquiriesLoading ? (
-                  <div className="flex items-center justify-center py-20"><Loader2 size={28} className="animate-spin text-sky-500" /></div>
+                  <div className="flex items-center justify-center py-20"><Loader2 size={28} className="animate-spin text-indigo-500" /></div>
                 ) : inquiries.length === 0 ? (
                   <div className="text-center py-16 bg-slate-900/50 border border-white/5 rounded-2xl">
                     <Mail size={36} className="text-slate-600 mx-auto mb-3" />
@@ -784,12 +784,12 @@ export default function AdminDashboard() {
                       <div
                         key={inq.id}
                         onClick={() => setSelectedInquiry(inq)}
-                        className="bg-slate-900/60 border border-white/8 rounded-2xl p-5 hover:border-sky-500/25 cursor-pointer transition-all"
+                        className="bg-slate-900/60 border border-white/8 rounded-2xl p-5 hover:border-indigo-500/25 cursor-pointer transition-all"
                       >
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center">
-                              <Building2 size={18} className="text-sky-400" />
+                            <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
+                              <Building2 size={18} className="text-indigo-400" />
                             </div>
                             <div>
                               <p className="font-semibold text-white text-sm">{inq.company_name}</p>
@@ -886,7 +886,7 @@ export default function AdminDashboard() {
                   <select
                     value={selectedAgent.application.status}
                     onChange={(e) => updateApplicationStatus(e.target.value)}
-                    className="w-full bg-slate-800 border border-white/10 text-white rounded-xl px-4 py-2.5 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 appearance-none"
+                    className="w-full bg-slate-800 border border-white/10 text-white rounded-xl px-4 py-2.5 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none"
                   >
                     {statusConfig.map((s) => <option key={s.id} value={s.status}>{s.label}</option>)}
                   </select>
@@ -918,7 +918,7 @@ export default function AdminDashboard() {
               {selectedAgent.skills.length > 0 && (
                 <div>
                   <p className="text-slate-500 text-xs mb-1">Skills</p>
-                  <div className="flex flex-wrap gap-1.5">{selectedAgent.skills.map((s) => <span key={s.id} className="text-xs px-2 py-0.5 bg-sky-500/10 border border-sky-500/20 rounded-md text-sky-300">{s.skill}</span>)}</div>
+                  <div className="flex flex-wrap gap-1.5">{selectedAgent.skills.map((s) => <span key={s.id} className="text-xs px-2 py-0.5 bg-indigo-500/10 border border-indigo-500/20 rounded-md text-indigo-300">{s.skill}</span>)}</div>
                 </div>
               )}
               {selectedAgent.languages.length > 0 && (
@@ -944,11 +944,11 @@ export default function AdminDashboard() {
 
             {/* Messages */}
             <div className="mb-6">
-              <h4 className="text-white font-semibold text-sm mb-3 flex items-center gap-2"><MessageSquare size={15} className="text-sky-400" /> Messages</h4>
+              <h4 className="text-white font-semibold text-sm mb-3 flex items-center gap-2"><MessageSquare size={15} className="text-indigo-400" /> Messages</h4>
               <div className="space-y-2 max-h-48 overflow-y-auto mb-3">
                 {messages.length === 0 ? <p className="text-slate-600 text-xs text-center py-4">No messages</p> :
                   messages.map((m) => (
-                    <div key={m.id} className={`rounded-xl px-3 py-2 text-xs ${m.sender_id === selectedAgent.profile.id ? 'bg-sky-500/10 text-slate-300' : 'bg-slate-800 text-slate-400'}`}>
+                    <div key={m.id} className={`rounded-xl px-3 py-2 text-xs ${m.sender_id === selectedAgent.profile.id ? 'bg-indigo-500/10 text-slate-300' : 'bg-slate-800 text-slate-400'}`}>
                       <p>{m.body}</p>
                       <p className="text-slate-600 text-xs mt-1">{new Date(m.created_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}</p>
                     </div>
@@ -956,8 +956,8 @@ export default function AdminDashboard() {
                 }
               </div>
               <div className="flex gap-2">
-                <input type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && sendMessage()} placeholder="Send a message..." className="flex-1 bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500" />
-                <button onClick={sendMessage} disabled={!newMessage.trim()} className="px-3 py-2 bg-sky-500 hover:bg-sky-400 disabled:opacity-40 text-white rounded-xl"><Send size={14} /></button>
+                <input type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && sendMessage()} placeholder="Send a message..." className="flex-1 bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                <button onClick={sendMessage} disabled={!newMessage.trim()} className="px-3 py-2 bg-indigo-500 hover:bg-indigo-400 disabled:opacity-40 text-white rounded-xl"><Send size={14} /></button>
               </div>
             </div>
 
@@ -999,7 +999,7 @@ export default function AdminDashboard() {
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-1.5">Company</label>
                   <div className="relative">
-                    <select value={selectedCompanyId} onChange={(e) => setSelectedCompanyId(e.target.value)} className="w-full bg-slate-800 border border-white/10 text-white rounded-xl px-4 py-3 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 appearance-none">
+                    <select value={selectedCompanyId} onChange={(e) => setSelectedCompanyId(e.target.value)} className="w-full bg-slate-800 border border-white/10 text-white rounded-xl px-4 py-3 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none">
                       <option value="">Select a company...</option>
                       {availableToAssign.map((c) => <option key={c.id} value={c.id} className="bg-slate-800">{c.name}</option>)}
                     </select>
@@ -1008,11 +1008,11 @@ export default function AdminDashboard() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-1.5">Notes (optional)</label>
-                  <input type="text" value={assignNote} onChange={(e) => setAssignNote(e.target.value)} placeholder="e.g. Primary contact for escalations" className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" />
+                  <input type="text" value={assignNote} onChange={(e) => setAssignNote(e.target.value)} placeholder="e.g. Primary contact for escalations" className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                 </div>
                 <div className="flex gap-3 pt-2">
                   <button onClick={() => setAssignModal(null)} className="flex-1 py-2.5 border border-white/10 text-slate-300 hover:text-white rounded-xl text-sm font-medium transition-colors">Cancel</button>
-                  <button onClick={submitAssignment} disabled={!selectedCompanyId || assignLoading} className="flex-1 py-2.5 bg-sky-500 hover:bg-sky-400 disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2">
+                  <button onClick={submitAssignment} disabled={!selectedCompanyId || assignLoading} className="flex-1 py-2.5 bg-indigo-500 hover:bg-indigo-400 disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2">
                     {assignLoading && <Loader2 size={14} className="animate-spin" />} Assign
                   </button>
                 </div>
@@ -1034,13 +1034,13 @@ export default function AdminDashboard() {
               {[{ key: 'name', label: 'Company Name', placeholder: 'Acme Corp' }, { key: 'industry', label: 'Industry', placeholder: 'Automotive Retail' }, { key: 'contact_name', label: 'Contact Name', placeholder: 'John Doe' }, { key: 'contact_email', label: 'Contact Email', placeholder: 'john@example.com' }].map(({ key, label, placeholder }) => (
                 <div key={key}>
                   <label className="block text-sm font-medium text-slate-300 mb-1.5">{label}</label>
-                  <input type={key === 'contact_email' ? 'email' : 'text'} value={addCompanyForm[key as keyof typeof addCompanyForm]} onChange={(e) => setAddCompanyForm((f) => ({ ...f, [key]: e.target.value }))} placeholder={placeholder} className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" />
+                  <input type={key === 'contact_email' ? 'email' : 'text'} value={addCompanyForm[key as keyof typeof addCompanyForm]} onChange={(e) => setAddCompanyForm((f) => ({ ...f, [key]: e.target.value }))} placeholder={placeholder} className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                 </div>
               ))}
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1.5">Priority</label>
                 <div className="relative">
-                  <select value={addCompanyForm.priority} onChange={(e) => setAddCompanyForm((f) => ({ ...f, priority: e.target.value }))} className="w-full bg-slate-800 border border-white/10 text-white rounded-xl px-4 py-3 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 appearance-none">
+                  <select value={addCompanyForm.priority} onChange={(e) => setAddCompanyForm((f) => ({ ...f, priority: e.target.value }))} className="w-full bg-slate-800 border border-white/10 text-white rounded-xl px-4 py-3 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none">
                     {['low', 'medium', 'high', 'critical'].map((p) => <option key={p} value={p} className="bg-slate-800">{p.charAt(0).toUpperCase() + p.slice(1)}</option>)}
                   </select>
                   <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
@@ -1049,7 +1049,7 @@ export default function AdminDashboard() {
               {formError && <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-red-400 text-sm">{formError}</div>}
               <div className="flex gap-3 pt-2">
                 <button type="button" onClick={() => { setShowAddCompany(false); setFormError(''); }} className="flex-1 py-2.5 border border-white/10 text-slate-300 hover:text-white rounded-xl text-sm font-medium transition-colors">Cancel</button>
-                <button type="submit" disabled={addCompanyLoading} className="flex-1 py-2.5 bg-sky-500 hover:bg-sky-400 disabled:opacity-60 text-white rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2">{addCompanyLoading && <Loader2 size={14} className="animate-spin" />} Add Company</button>
+                <button type="submit" disabled={addCompanyLoading} className="flex-1 py-2.5 bg-indigo-500 hover:bg-indigo-400 disabled:opacity-60 text-white rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2">{addCompanyLoading && <Loader2 size={14} className="animate-spin" />} Add Company</button>
               </div>
             </form>
           </div>
@@ -1067,16 +1067,16 @@ export default function AdminDashboard() {
             <form onSubmit={submitCountry} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1.5">Country Name</label>
-                <input type="text" required value={countryForm.name} onChange={(e) => setCountryForm((f) => ({ ...f, name: e.target.value }))} placeholder="e.g. Brazil" className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" />
+                <input type="text" required value={countryForm.name} onChange={(e) => setCountryForm((f) => ({ ...f, name: e.target.value }))} placeholder="e.g. Brazil" className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1.5">ISO Code (2-letter)</label>
-                <input type="text" required maxLength={2} value={countryForm.iso_code} onChange={(e) => setCountryForm((f) => ({ ...f, iso_code: e.target.value.toUpperCase() }))} placeholder="e.g. BR" className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 uppercase" />
+                <input type="text" required maxLength={2} value={countryForm.iso_code} onChange={(e) => setCountryForm((f) => ({ ...f, iso_code: e.target.value.toUpperCase() }))} placeholder="e.g. BR" className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 uppercase" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1.5">Application Status</label>
                 <div className="relative">
-                  <select value={countryForm.application_status} onChange={(e) => setCountryForm((f) => ({ ...f, application_status: e.target.value }))} className="w-full bg-slate-800 border border-white/10 text-white rounded-xl px-4 py-3 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 appearance-none">
+                  <select value={countryForm.application_status} onChange={(e) => setCountryForm((f) => ({ ...f, application_status: e.target.value }))} className="w-full bg-slate-800 border border-white/10 text-white rounded-xl px-4 py-3 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none">
                     <option value="accepting">Accepting Applications</option>
                     <option value="review_required">Review Required</option>
                     <option value="temp_closed">Temporarily Closed</option>
@@ -1087,11 +1087,11 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1.5">Notes (optional)</label>
-                <input type="text" value={countryForm.notes} onChange={(e) => setCountryForm((f) => ({ ...f, notes: e.target.value }))} placeholder="e.g. Specific documentation requirements" className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" />
+                <input type="text" value={countryForm.notes} onChange={(e) => setCountryForm((f) => ({ ...f, notes: e.target.value }))} placeholder="e.g. Specific documentation requirements" className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
               </div>
               <div className="flex gap-3 pt-2">
                 <button type="button" onClick={() => setShowAddCountry(false)} className="flex-1 py-2.5 border border-white/10 text-slate-300 hover:text-white rounded-xl text-sm font-medium transition-colors">Cancel</button>
-                <button type="submit" disabled={countryLoading} className="flex-1 py-2.5 bg-sky-500 hover:bg-sky-400 disabled:opacity-60 text-white rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2">{countryLoading && <Loader2 size={14} className="animate-spin" />} Add Country</button>
+                <button type="submit" disabled={countryLoading} className="flex-1 py-2.5 bg-indigo-500 hover:bg-indigo-400 disabled:opacity-60 text-white rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2">{countryLoading && <Loader2 size={14} className="animate-spin" />} Add Country</button>
               </div>
             </form>
           </div>
@@ -1109,15 +1109,15 @@ export default function AdminDashboard() {
             <form onSubmit={submitOpportunity} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1.5">Title</label>
-                <input type="text" required value={oppForm.title} onChange={(e) => setOppForm((f) => ({ ...f, title: e.target.value }))} placeholder="e.g. Customer Service - U.S. Eastern" className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" />
+                <input type="text" required value={oppForm.title} onChange={(e) => setOppForm((f) => ({ ...f, title: e.target.value }))} placeholder="e.g. Customer Service - U.S. Eastern" className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1.5">Description</label>
-                <textarea required value={oppForm.description} onChange={(e) => setOppForm((f) => ({ ...f, description: e.target.value }))} rows={3} placeholder="Describe the opportunity..." className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" />
+                <textarea required value={oppForm.description} onChange={(e) => setOppForm((f) => ({ ...f, description: e.target.value }))} rows={3} placeholder="Describe the opportunity..." className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
               </div>
               <div className="flex gap-3 pt-2">
                 <button type="button" onClick={() => setShowAddOpp(false)} className="flex-1 py-2.5 border border-white/10 text-slate-300 hover:text-white rounded-xl text-sm font-medium transition-colors">Cancel</button>
-                <button type="submit" disabled={oppLoading} className="flex-1 py-2.5 bg-sky-500 hover:bg-sky-400 disabled:opacity-60 text-white rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2">{oppLoading && <Loader2 size={14} className="animate-spin" />} Create</button>
+                <button type="submit" disabled={oppLoading} className="flex-1 py-2.5 bg-indigo-500 hover:bg-indigo-400 disabled:opacity-60 text-white rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2">{oppLoading && <Loader2 size={14} className="animate-spin" />} Create</button>
               </div>
             </form>
           </div>
@@ -1143,7 +1143,7 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <p className="text-slate-500 text-xs mb-1">Email</p>
-                <a href={`mailto:${selectedInquiry.email}`} className="text-sky-400 text-sm hover:text-sky-300 transition-colors">{selectedInquiry.email}</a>
+                <a href={`mailto:${selectedInquiry.email}`} className="text-indigo-400 text-sm hover:text-indigo-300 transition-colors">{selectedInquiry.email}</a>
               </div>
               {selectedInquiry.phone && (
                 <div>
@@ -1183,7 +1183,7 @@ export default function AdminDashboard() {
 
             <a
               href={`mailto:${selectedInquiry.email}?subject=Re: Your inquiry to Connect Care&body=Hi ${selectedInquiry.contact_name},%0D%0A%0D%0AThank you for reaching out to Connect Care regarding ${selectedInquiry.service_interest}.%0D%0A%0D%0A`}
-              className="w-full flex items-center justify-center gap-2 px-5 py-3 bg-sky-500 hover:bg-sky-400 text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-sky-500/20"
+              className="w-full flex items-center justify-center gap-2 px-5 py-3 bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/20"
             >
               <Mail size={16} /> Reply via Email
             </a>
@@ -1197,7 +1197,7 @@ export default function AdminDashboard() {
 function FilterSelect({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: { value: string; label: string }[] }) {
   return (
     <div className="relative">
-      <select value={value} onChange={(e) => onChange(e.target.value)} className="bg-slate-800 border border-white/10 text-slate-300 rounded-xl pl-3 pr-8 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 appearance-none">
+      <select value={value} onChange={(e) => onChange(e.target.value)} className="bg-slate-800 border border-white/10 text-slate-300 rounded-xl pl-3 pr-8 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none">
         <option value="">All {label}</option>
         {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>

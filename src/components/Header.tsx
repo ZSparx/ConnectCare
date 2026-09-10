@@ -11,14 +11,14 @@ export default function Header({ onNavigate }: Props) {
     <header className="bg-slate-950/80 border-b border-white/8 backdrop-blur-sm sticky top-0 z-40">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center shadow-lg shadow-sky-500/30">
+          <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/30">
             <Headset size={18} className="text-white" />
           </div>
           <div className="flex items-baseline gap-1.5">
             <span className="text-white font-bold text-lg tracking-tight">Connect</span>
-            <span className="text-sky-400 font-bold text-lg tracking-tight">Care</span>
+            <span className="text-indigo-400 font-bold text-lg tracking-tight">Care</span>
           </div>
-          <span className="hidden sm:block ml-2 px-2 py-0.5 bg-sky-500/10 border border-sky-500/20 rounded-md text-xs font-medium text-sky-400 tracking-wide">
+          <span className="hidden sm:block ml-2 px-2 py-0.5 bg-indigo-500/10 border border-indigo-500/20 rounded-md text-xs font-medium text-indigo-400 tracking-wide">
             BPO SERVICES
           </span>
         </div>

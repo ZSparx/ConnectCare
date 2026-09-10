@@ -46,8 +46,8 @@ export default function PrivacyPolicy({ onBack }: Props) {
           ← Back
         </button>
         <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 bg-sky-500/10 border border-sky-500/20 rounded-xl flex items-center justify-center">
-            <Shield size={20} className="text-sky-400" />
+          <div className="w-10 h-10 bg-indigo-500/10 border border-indigo-500/20 rounded-xl flex items-center justify-center">
+            <Shield size={20} className="text-indigo-400" />
           </div>
           <div>
             <h1 className="text-2xl font-bold text-white">Privacy Policy</h1>
