@@ -27,6 +27,7 @@ import {
   X,
   Building2,
   Mail,
+  Truck,
 } from 'lucide-react';
 
 type Props = {
@@ -43,6 +44,7 @@ const SERVICES = [
   { icon: CreditCard, title: 'Billing & Collections', desc: 'Billing inquiries, payment processing, and accounts-receivable collections handled with professionalism.' },
   { icon: MessageSquare, title: 'Chat & Email Support', desc: 'Omnichannel support across live chat, email, and social messaging — wherever your customers are.' },
   { icon: ClipboardList, title: 'Back-Office Support', desc: 'Data entry, order processing, scheduling, and administrative tasks that keep your operations running.' },
+  { icon: Truck, title: 'Dispatch', desc: 'Real-time dispatch coordination for fleets and field teams, keeping jobs, drivers, and customers in sync.' },
 ];
 
 const CLIENT_BENEFITS = [
@@ -76,6 +78,7 @@ const SERVICE_OPTIONS = [
   'Billing & Collections',
   'Chat & Email Support',
   'Back-Office Support',
+  'Dispatch',
   'Not sure yet',
 ];
 

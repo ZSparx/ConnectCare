@@ -308,6 +308,7 @@ export const SKILL_OPTIONS = [
   'Chat Support',
   'Email Support',
   'Administrative Support',
+  'Dispatch',
   'Other',
 ];
 
@@ -321,6 +322,7 @@ export const OPPORTUNITY_PREFERENCE_OPTIONS = [
   'Administrative',
   'Billing',
   'Collections',
+  'Dispatch',
   'Other',
 ];
 

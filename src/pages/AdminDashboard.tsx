@@ -25,6 +25,9 @@ import {
   Phone,
   Clock,
   Mail,
+  DollarSign,
+  FileText,
+  ExternalLink,
 } from 'lucide-react';
 import { Profile, Company, AgentAssignment, ClientInquiry } from '../lib/supabase';
 import type {
@@ -39,6 +42,9 @@ import type {
   RecruiterNote,
   Country,
   ApplicationStatusConfig,
+  TimeEntry,
+  AgentCompensation,
+  Invoice,
 } from '../lib/agent-types';
 import { getStatusLabel, getStatusColor, COUNTRY_STATUS_CONFIG } from '../lib/countries';
 
@@ -55,7 +61,7 @@ const STATUS_CONFIG = {
   offline: { label: 'Offline', dot: 'bg-slate-500' },
 };
 
-type Tab = 'overview' | 'agents' | 'pool' | 'companies' | 'countries' | 'opportunities' | 'statuses' | 'inquiries';
+type Tab = 'overview' | 'agents' | 'pool' | 'companies' | 'countries' | 'opportunities' | 'statuses' | 'inquiries' | 'timesheet' | 'invoices';
 
 type AgentDetail = {
   profile: Profile;
@@ -117,6 +123,28 @@ export default function AdminDashboard() {
   const [inquiriesLoading, setInquiriesLoading] = useState(false);
   const [selectedInquiry, setSelectedInquiry] = useState<ClientInquiry | null>(null);
 
+  // Time & Pay
+  const [timeEntries, setTimeEntries] = useState<TimeEntry[]>([]);
+  const [compensations, setCompensations] = useState<AgentCompensation[]>([]);
+  const [timesheetLoading, setTimesheetLoading] = useState(false);
+  const [rateInputs, setRateInputs] = useState<Record<string, string>>({});
+  const [rateSaving, setRateSaving] = useState<string | null>(null);
+
+  // Invoices
+  const [invoicesList, setInvoicesList] = useState<Invoice[]>([]);
+  const [invoicesLoading, setInvoicesLoading] = useState(false);
+  const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+  const [invoiceCompanyId, setInvoiceCompanyId] = useState('');
+  const [invoiceLineItems, setInvoiceLineItems] = useState<{ description: string; amount: string; quantity: string }[]>([
+    { description: '', amount: '', quantity: '1' },
+  ]);
+  const [invoiceDueDate, setInvoiceDueDate] = useState('');
+  const [invoiceDescription, setInvoiceDescription] = useState('');
+  const [invoiceSubmitting, setInvoiceSubmitting] = useState(false);
+  const [invoiceError, setInvoiceError] = useState('');
+  const [invoiceSuccessUrl, setInvoiceSuccessUrl] = useState('');
+  const [refreshingInvoiceId, setRefreshingInvoiceId] = useState<string | null>(null);
+
   // Messages and notes
   const [newMessage, setNewMessage] = useState('');
   const [newNote, setNewNote] = useState('');
@@ -166,6 +194,121 @@ export default function AdminDashboard() {
     if (selectedInquiry && selectedInquiry.id === inquiryId) {
       setSelectedInquiry({ ...selectedInquiry, status: newStatus as 'new' | 'contacted' });
     }
+  }
+
+  async function fetchTimesheet() {
+    setTimesheetLoading(true);
+    const [entriesRes, compRes] = await Promise.all([
+      supabase.from('time_entries').select('*').order('clock_in', { ascending: false }),
+      supabase.from('agent_compensation').select('*'),
+    ]);
+    setTimeEntries(entriesRes.data ?? []);
+    setCompensations(compRes.data ?? []);
+    const inputs: Record<string, string> = {};
+    for (const c of compRes.data ?? []) inputs[c.agent_id] = String(c.hourly_rate);
+    setRateInputs((prev) => ({ ...inputs, ...prev }));
+    setTimesheetLoading(false);
+  }
+
+  async function saveRate(agentId: string) {
+    const rate = Number(rateInputs[agentId]);
+    if (!(rate >= 0)) return;
+    setRateSaving(agentId);
+    await supabase.from('agent_compensation').upsert({
+      agent_id: agentId,
+      hourly_rate: rate,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: 'agent_id' });
+    await fetchTimesheet();
+    setRateSaving(null);
+  }
+
+  function agentHoursSummary(agentId: string) {
+    const entries = timeEntries.filter((t) => t.agent_id === agentId && t.duration_minutes !== null);
+    const totalMinutes = entries.reduce((sum, t) => sum + (t.duration_minutes ?? 0), 0);
+    const rate = compensations.find((c) => c.agent_id === agentId)?.hourly_rate ?? 0;
+    const hours = totalMinutes / 60;
+    return { totalMinutes, hours, rate, pay: hours * rate, shiftCount: entries.length };
+  }
+
+  useEffect(() => {
+    if (tab === 'timesheet' && timeEntries.length === 0 && !timesheetLoading) {
+      fetchTimesheet();
+    }
+  }, [tab]);
+
+  async function fetchInvoices() {
+    setInvoicesLoading(true);
+    const { data } = await supabase.from('invoices').select('*').order('created_at', { ascending: false });
+    setInvoicesList(data ?? []);
+    setInvoicesLoading(false);
+  }
+
+  useEffect(() => {
+    if (tab === 'invoices' && invoicesList.length === 0 && !invoicesLoading) {
+      fetchInvoices();
+    }
+  }, [tab]);
+
+  function openInvoiceModal() {
+    setInvoiceCompanyId('');
+    setInvoiceLineItems([{ description: '', amount: '', quantity: '1' }]);
+    setInvoiceDueDate('');
+    setInvoiceDescription('');
+    setInvoiceError('');
+    setInvoiceSuccessUrl('');
+    setShowInvoiceModal(true);
+  }
+
+  function updateLineItem(index: number, field: 'description' | 'amount' | 'quantity', value: string) {
+    setInvoiceLineItems((prev) => prev.map((item, i) => (i === index ? { ...item, [field]: value } : item)));
+  }
+
+  function addLineItem() {
+    setInvoiceLineItems((prev) => [...prev, { description: '', amount: '', quantity: '1' }]);
+  }
+
+  function removeLineItem(index: number) {
+    setInvoiceLineItems((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  async function submitInvoice() {
+    setInvoiceError('');
+    if (!invoiceCompanyId) { setInvoiceError('Select a company.'); return; }
+    const items = invoiceLineItems
+      .filter((li) => li.description.trim() && Number(li.amount) > 0)
+      .map((li) => ({ description: li.description.trim(), amount: Number(li.amount), quantity: Number(li.quantity) || 1 }));
+    if (items.length === 0) { setInvoiceError('Add at least one line item with a description and a positive amount.'); return; }
+
+    setInvoiceSubmitting(true);
+    const { data: sessionData } = await supabase.auth.getSession();
+    const { data, error } = await supabase.functions.invoke('create-invoice', {
+      body: {
+        company_id: invoiceCompanyId,
+        line_items: items,
+        due_date: invoiceDueDate || undefined,
+        description: invoiceDescription || undefined,
+      },
+      headers: sessionData.session ? { Authorization: `Bearer ${sessionData.session.access_token}` } : undefined,
+    });
+    if (error || data?.error) {
+      setInvoiceError(data?.error || error?.message || 'Could not create the invoice. Please try again.');
+    } else {
+      setInvoiceSuccessUrl(data?.invoice_url || '');
+      await fetchInvoices();
+    }
+    setInvoiceSubmitting(false);
+  }
+
+  async function refreshInvoice(invoiceId: string) {
+    setRefreshingInvoiceId(invoiceId);
+    const { data: sessionData } = await supabase.auth.getSession();
+    await supabase.functions.invoke('refresh-invoice', {
+      body: { invoice_id: invoiceId },
+      headers: sessionData.session ? { Authorization: `Bearer ${sessionData.session.access_token}` } : undefined,
+    });
+    await fetchInvoices();
+    setRefreshingInvoiceId(null);
   }
 
   async function fetchPool() {
@@ -392,6 +535,8 @@ export default function AdminDashboard() {
     { id: 'opportunities', label: 'Opportunities', icon: Briefcase },
     { id: 'statuses', label: 'Statuses', icon: Tag },
     { id: 'inquiries', label: 'Inquiries', icon: Mail },
+    { id: 'timesheet', label: 'Time & Pay', icon: Clock },
+    { id: 'invoices', label: 'Invoices', icon: DollarSign },
   ];
 
   return (
@@ -843,6 +988,174 @@ export default function AdminDashboard() {
                 <p className="text-slate-600 text-xs mt-3">Statuses are configurable. Admins can add, edit, or deactivate statuses from this table.</p>
               </div>
             )}
+
+            {/* TIME & PAY TAB */}
+            {tab === 'timesheet' && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-base font-semibold text-white">Time & Pay</h3>
+                  <button onClick={fetchTimesheet} className="p-2.5 bg-slate-800/80 border border-white/10 rounded-xl text-slate-400 hover:text-white transition-colors">
+                    <RefreshCw size={16} />
+                  </button>
+                </div>
+                {timesheetLoading ? (
+                  <div className="flex items-center justify-center py-20"><Loader2 size={28} className="animate-spin text-indigo-500" /></div>
+                ) : (
+                  <>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {agents.filter((a) => a.role !== 'admin').map((agent) => {
+                        const summary = agentHoursSummary(agent.id);
+                        return (
+                          <div key={agent.id} className="bg-slate-900/60 border border-white/8 rounded-2xl p-5">
+                            <div className="flex items-center gap-3 mb-4">
+                              <div className="w-10 h-10 rounded-xl bg-indigo-500/15 flex items-center justify-center text-indigo-300 font-bold">{agent.full_name?.[0] ?? '?'}</div>
+                              <div>
+                                <p className="font-semibold text-white text-sm">{agent.full_name || 'Unnamed Agent'}</p>
+                                <p className="text-slate-500 text-xs">{summary.shiftCount} completed shift{summary.shiftCount !== 1 ? 's' : ''}</p>
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3 text-xs mb-4">
+                              <div className="bg-slate-800/50 rounded-lg px-3 py-2">
+                                <p className="text-slate-600 mb-0.5">Total Hours</p>
+                                <p className="text-slate-200 font-semibold">{summary.hours.toFixed(2)}h</p>
+                              </div>
+                              <div className="bg-slate-800/50 rounded-lg px-3 py-2">
+                                <p className="text-slate-600 mb-0.5">Estimated Pay</p>
+                                <p className="text-emerald-400 font-semibold">${summary.pay.toFixed(2)}</p>
+                              </div>
+                            </div>
+                            <label className="block text-xs font-medium text-slate-400 mb-1.5">Hourly Rate (admin-only)</label>
+                            <div className="flex gap-2">
+                              <div className="relative flex-1">
+                                <DollarSign size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                                <input
+                                  type="number"
+                                  min="0"
+                                  step="0.01"
+                                  value={rateInputs[agent.id] ?? ''}
+                                  onChange={(e) => setRateInputs((prev) => ({ ...prev, [agent.id]: e.target.value }))}
+                                  placeholder="0.00"
+                                  className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-lg pl-7 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                />
+                              </div>
+                              <button
+                                onClick={() => saveRate(agent.id)}
+                                disabled={rateSaving === agent.id}
+                                className="px-3 py-2 bg-indigo-500 hover:bg-indigo-400 disabled:opacity-60 text-white rounded-lg text-xs font-medium transition-all flex items-center gap-1.5"
+                              >
+                                {rateSaving === agent.id && <Loader2 size={12} className="animate-spin" />} Save
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div>
+                      <h4 className="text-sm font-semibold text-white mb-3">Shift Log</h4>
+                      <div className="bg-slate-900/60 border border-white/8 rounded-2xl overflow-x-auto">
+                        <table className="w-full text-sm min-w-[700px]">
+                          <thead>
+                            <tr className="border-b border-white/8">
+                              <th className="text-left px-4 py-3 text-slate-500 font-medium">Agent</th>
+                              <th className="text-left px-4 py-3 text-slate-500 font-medium">Clock In</th>
+                              <th className="text-left px-4 py-3 text-slate-500 font-medium">Clock Out</th>
+                              <th className="text-left px-4 py-3 text-slate-500 font-medium">Duration</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {timeEntries.length === 0 ? (
+                              <tr><td colSpan={4} className="text-center py-10 text-slate-500 text-sm">No shifts logged yet.</td></tr>
+                            ) : timeEntries.map((entry) => {
+                              const agent = agents.find((a) => a.id === entry.agent_id);
+                              return (
+                                <tr key={entry.id} className="border-b border-white/5 last:border-0">
+                                  <td className="px-4 py-3 text-white">{agent?.full_name || 'Unknown'}</td>
+                                  <td className="px-4 py-3 text-slate-400">{new Date(entry.clock_in).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}</td>
+                                  <td className="px-4 py-3 text-slate-400">{entry.clock_out ? new Date(entry.clock_out).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : <span className="text-emerald-400">In progress</span>}</td>
+                                  <td className="px-4 py-3 text-slate-300">{entry.duration_minutes !== null ? `${Math.floor(entry.duration_minutes / 60)}h ${entry.duration_minutes % 60}m` : '—'}</td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+
+            {/* INVOICES TAB */}
+            {tab === 'invoices' && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-base font-semibold text-white">Client Invoices</h3>
+                  <div className="flex items-center gap-2">
+                    <button onClick={fetchInvoices} className="p-2.5 bg-slate-800/80 border border-white/10 rounded-xl text-slate-400 hover:text-white transition-colors">
+                      <RefreshCw size={16} />
+                    </button>
+                    <button onClick={openInvoiceModal} className="flex items-center gap-1.5 px-4 py-2 bg-indigo-500 hover:bg-indigo-400 text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-indigo-500/20">
+                      <Plus size={15} /> New Invoice
+                    </button>
+                  </div>
+                </div>
+                {invoicesLoading ? (
+                  <div className="flex items-center justify-center py-20"><Loader2 size={28} className="animate-spin text-indigo-500" /></div>
+                ) : invoicesList.length === 0 ? (
+                  <div className="text-center py-16 bg-slate-900/50 border border-white/5 rounded-2xl">
+                    <DollarSign size={36} className="text-slate-600 mx-auto mb-3" />
+                    <p className="text-slate-500 text-sm">No invoices yet. Create one to bill a client.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {invoicesList.map((inv) => {
+                      const company = companies.find((c) => c.id === inv.company_id);
+                      return (
+                        <div key={inv.id} className="bg-slate-900/60 border border-white/8 rounded-2xl p-5">
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 bg-indigo-500/10 border border-indigo-500/20 rounded-xl flex items-center justify-center">
+                                <FileText size={18} className="text-indigo-400" />
+                              </div>
+                              <div>
+                                <p className="font-semibold text-white text-sm">{company?.name ?? 'Unknown company'} {inv.invoice_number && <span className="text-slate-500 font-normal">#{inv.invoice_number}</span>}</p>
+                                <p className="text-slate-500 text-xs mt-0.5">{inv.description || 'No description'}</p>
+                              </div>
+                            </div>
+                            <span className={`text-xs px-2.5 py-1 rounded-lg border capitalize ${
+                              inv.status === 'paid' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
+                              : inv.status === 'open' ? 'text-amber-400 bg-amber-500/10 border-amber-500/20'
+                              : inv.status === 'void' || inv.status === 'uncollectible' ? 'text-red-400 bg-red-500/10 border-red-500/20'
+                              : 'text-slate-400 bg-slate-500/10 border-slate-500/20'
+                            }`}>{inv.status}</span>
+                          </div>
+                          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 mb-3">
+                            <span>Due: <span className="text-slate-300">${inv.amount_due.toFixed(2)}</span></span>
+                            <span>Paid: <span className="text-slate-300">${inv.amount_paid.toFixed(2)}</span></span>
+                            {inv.due_date && <span>Due date: <span className="text-slate-300">{new Date(inv.due_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span></span>}
+                          </div>
+                          <div className="flex items-center gap-3">
+                            {inv.hosted_invoice_url && (
+                              <a href={inv.hosted_invoice_url} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 transition-colors">
+                                <ExternalLink size={12} /> View on Stripe
+                              </a>
+                            )}
+                            <button
+                              onClick={() => refreshInvoice(inv.id)}
+                              disabled={refreshingInvoiceId === inv.id}
+                              className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors disabled:opacity-50"
+                            >
+                              {refreshingInvoiceId === inv.id ? <Loader2 size={12} className="animate-spin" /> : <RefreshCw size={12} />} Refresh status
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
           </>
         )}
       </div>
@@ -1120,6 +1433,108 @@ export default function AdminDashboard() {
                 <button type="submit" disabled={oppLoading} className="flex-1 py-2.5 bg-indigo-500 hover:bg-indigo-400 disabled:opacity-60 text-white rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2">{oppLoading && <Loader2 size={14} className="animate-spin" />} Create</button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* New Invoice Modal */}
+      {showInvoiceModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-900 border border-white/10 rounded-2xl w-full max-w-lg p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="font-semibold text-white text-lg">New Invoice</h3>
+              <button onClick={() => setShowInvoiceModal(false)} className="text-slate-500 hover:text-white"><X size={20} /></button>
+            </div>
+
+            {invoiceSuccessUrl ? (
+              <div className="text-center py-6">
+                <CheckCircle2 size={40} className="text-emerald-400 mx-auto mb-4" />
+                <p className="text-white font-semibold mb-2">Invoice sent!</p>
+                <p className="text-slate-400 text-sm mb-5">Stripe has emailed the invoice to the client.</p>
+                <a href={invoiceSuccessUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-indigo-400 hover:text-indigo-300 text-sm mb-5">
+                  <ExternalLink size={14} /> View invoice
+                </a>
+                <button onClick={() => setShowInvoiceModal(false)} className="w-full py-2.5 bg-indigo-500 hover:bg-indigo-400 text-white rounded-xl text-sm font-medium transition-all">Done</button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1.5">Company</label>
+                  <div className="relative">
+                    <select value={invoiceCompanyId} onChange={(e) => setInvoiceCompanyId(e.target.value)} className="w-full bg-slate-800 border border-white/10 text-white rounded-xl px-4 py-3 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none">
+                      <option value="">Select a company...</option>
+                      {companies.map((c) => <option key={c.id} value={c.id} className="bg-slate-800">{c.name}</option>)}
+                    </select>
+                    <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1.5">Line Items</label>
+                  <div className="space-y-2">
+                    {invoiceLineItems.map((item, i) => (
+                      <div key={i} className="flex gap-2 items-start">
+                        <input
+                          type="text"
+                          value={item.description}
+                          onChange={(e) => updateLineItem(i, 'description', e.target.value)}
+                          placeholder="Description"
+                          className="flex-1 bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                        <input
+                          type="number"
+                          min="1"
+                          value={item.quantity}
+                          onChange={(e) => updateLineItem(i, 'quantity', e.target.value)}
+                          placeholder="Qty"
+                          className="w-16 bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-lg px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          value={item.amount}
+                          onChange={(e) => updateLineItem(i, 'amount', e.target.value)}
+                          placeholder="Amount"
+                          className="w-24 bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-lg px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                        {invoiceLineItems.length > 1 && (
+                          <button type="button" onClick={() => removeLineItem(i)} className="text-slate-600 hover:text-red-400 transition-colors p-2"><X size={14} /></button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  <button type="button" onClick={addLineItem} className="text-indigo-400 hover:text-indigo-300 text-xs font-medium mt-2 transition-colors">
+                    + Add line item
+                  </button>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1.5">Due Date (optional)</label>
+                  <input type="date" value={invoiceDueDate} onChange={(e) => setInvoiceDueDate(e.target.value)} className="w-full bg-slate-800 border border-white/10 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                  <p className="text-slate-600 text-xs mt-1">Defaults to 14 days if left blank.</p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1.5">Memo (optional)</label>
+                  <input type="text" value={invoiceDescription} onChange={(e) => setInvoiceDescription(e.target.value)} placeholder="e.g. October staffing services" className="w-full bg-slate-800 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                </div>
+
+                {invoiceError && <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-red-400 text-sm">{invoiceError}</div>}
+
+                <div className="flex gap-3 pt-2">
+                  <button type="button" onClick={() => setShowInvoiceModal(false)} className="flex-1 py-2.5 border border-white/10 text-slate-300 hover:text-white rounded-xl text-sm font-medium transition-colors">Cancel</button>
+                  <button
+                    type="button"
+                    onClick={submitInvoice}
+                    disabled={invoiceSubmitting}
+                    className="flex-1 py-2.5 bg-indigo-500 hover:bg-indigo-400 disabled:opacity-60 text-white rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2"
+                  >
+                    {invoiceSubmitting && <Loader2 size={14} className="animate-spin" />} Create & Send
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

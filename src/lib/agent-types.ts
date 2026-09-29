@@ -164,6 +164,45 @@ export type ApplicationStatusConfig = {
   sort_order: number;
 };
 
+export type TimeEntry = {
+  id: string;
+  agent_id: string;
+  clock_in: string;
+  clock_out: string | null;
+  duration_minutes: number | null;
+  notes: string;
+  created_at: string;
+};
+
+export type AgentCompensation = {
+  id: string;
+  agent_id: string;
+  hourly_rate: number;
+  currency: string;
+  effective_date: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type Invoice = {
+  id: string;
+  company_id: string;
+  stripe_invoice_id: string;
+  stripe_customer_id: string;
+  invoice_number: string;
+  status: string;
+  amount_due: number;
+  amount_paid: number;
+  currency: string;
+  description: string;
+  due_date: string | null;
+  hosted_invoice_url: string | null;
+  pdf_url: string | null;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 export type AgentPoolRow = {
   profile: {
     id: string;

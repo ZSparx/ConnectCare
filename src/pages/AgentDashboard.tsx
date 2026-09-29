@@ -19,6 +19,9 @@ import {
   Briefcase,
   MessageSquare,
   Send,
+  PlayCircle,
+  StopCircle,
+  History,
 } from 'lucide-react';
 import { AgentAssignment, Profile } from '../lib/supabase';
 import type {
@@ -30,6 +33,7 @@ import type {
   AgentEquipment,
   AgentAvailability,
   AgentMessage,
+  TimeEntry,
 } from '../lib/agent-types';
 import { getStatusLabel, getStatusColor } from '../lib/countries';
 
@@ -67,12 +71,82 @@ export default function AgentDashboard({ onStartApplication }: Props) {
   const [newMessage, setNewMessage] = useState('');
   const [sendingMessage, setSendingMessage] = useState(false);
 
+  // Time clock
+  const [timeEntries, setTimeEntries] = useState<TimeEntry[]>([]);
+  const [clockLoading, setClockLoading] = useState(false);
+  const [clockError, setClockError] = useState('');
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+
   useEffect(() => {
     if (profile) {
       fetchAll();
       fetchAssignments();
+      fetchTimeEntries();
     }
   }, [profile]);
+
+  const activeEntry = timeEntries.find((t: TimeEntry) => t.clock_out === null) ?? null;
+
+  useEffect(() => {
+    if (!activeEntry) {
+      setElapsedSeconds(0);
+      return;
+    }
+    const tick = () => {
+      setElapsedSeconds(Math.max(0, Math.floor((Date.now() - new Date(activeEntry.clock_in).getTime()) / 1000)));
+    };
+    tick();
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, [activeEntry]);
+
+  async function fetchTimeEntries() {
+    if (!profile) return;
+    const { data } = await supabase
+      .from('time_entries')
+      .select('*')
+      .eq('agent_id', profile.id)
+      .order('clock_in', { ascending: false })
+      .limit(20);
+    setTimeEntries(data ?? []);
+  }
+
+  async function clockIn() {
+    if (!profile) return;
+    setClockError('');
+    setClockLoading(true);
+    const { error } = await supabase.from('time_entries').insert({ agent_id: profile.id });
+    if (error) setClockError('Could not clock in. Please try again.');
+    await fetchTimeEntries();
+    setClockLoading(false);
+  }
+
+  async function clockOut() {
+    if (!activeEntry) return;
+    setClockError('');
+    setClockLoading(true);
+    const { error } = await supabase
+      .from('time_entries')
+      .update({ clock_out: new Date().toISOString() })
+      .eq('id', activeEntry.id);
+    if (error) setClockError('Could not clock out. Please try again.');
+    await fetchTimeEntries();
+    setClockLoading(false);
+  }
+
+  function formatDuration(totalSeconds: number): string {
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = totalSeconds % 60;
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  }
+
+  function formatMinutes(minutes: number | null): string {
+    if (minutes === null) return '—';
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    return h > 0 ? `${h}h ${m}m` : `${m}m`;
+  }
 
   async function fetchAll() {
     if (!profile) return;
@@ -172,6 +246,55 @@ export default function AgentDashboard({ onStartApplication }: Props) {
               Sign Out
             </button>
           </div>
+        </div>
+
+        {/* Time Clock */}
+        <div className="bg-slate-900/60 border border-white/8 rounded-2xl p-6 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-base font-semibold text-white flex items-center gap-2 mb-1">
+                <Clock size={18} className="text-indigo-400" />
+                Time Clock
+              </h3>
+              {activeEntry ? (
+                <p className="text-emerald-400 text-sm font-mono">{formatDuration(elapsedSeconds)} <span className="text-slate-500 font-sans">elapsed</span></p>
+              ) : (
+                <p className="text-slate-500 text-sm">Not clocked in</p>
+              )}
+            </div>
+            <button
+              onClick={activeEntry ? clockOut : clockIn}
+              disabled={clockLoading}
+              className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all shadow-lg disabled:opacity-60 ${
+                activeEntry
+                  ? 'bg-red-500 hover:bg-red-400 text-white shadow-red-500/20'
+                  : 'bg-emerald-500 hover:bg-emerald-400 text-white shadow-emerald-500/20'
+              }`}
+            >
+              {clockLoading ? <Loader2 size={18} className="animate-spin" /> : activeEntry ? <StopCircle size={18} /> : <PlayCircle size={18} />}
+              {activeEntry ? 'Clock Out' : 'Clock In'}
+            </button>
+          </div>
+          {clockError && <p className="text-red-400 text-xs mt-3">{clockError}</p>}
+          {timeEntries.length > 0 && (
+            <div className="mt-5 pt-5 border-t border-white/5">
+              <p className="text-slate-500 text-xs font-medium mb-3 flex items-center gap-1.5"><History size={13} /> Recent Shifts</p>
+              <div className="space-y-1.5 max-h-48 overflow-y-auto">
+                {timeEntries.map((entry) => (
+                  <div key={entry.id} className="flex items-center justify-between text-xs py-1.5 px-3 rounded-lg bg-slate-800/50">
+                    <span className="text-slate-400">
+                      {new Date(entry.clock_in).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}{' '}
+                      {new Date(entry.clock_in).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                      {entry.clock_out ? ` – ${new Date(entry.clock_out).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}` : ' – now'}
+                    </span>
+                    <span className={entry.clock_out ? 'text-slate-300 font-medium' : 'text-emerald-400 font-medium'}>
+                      {entry.clock_out ? formatMinutes(entry.duration_minutes) : 'In progress'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Application status section */}

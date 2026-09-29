@@ -23,6 +23,7 @@ export type Company = {
   contact_email: string;
   priority: 'low' | 'medium' | 'high' | 'critical';
   active: boolean;
+  stripe_customer_id?: string | null;
   created_at: string;
 };
 

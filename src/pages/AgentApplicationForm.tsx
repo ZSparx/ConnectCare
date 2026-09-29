@@ -197,6 +197,10 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
     switch (step) {
       case 0: return firstName.trim() !== '' && lastName.trim() !== '' && email.trim() !== '' && mobilePhone.trim() !== '';
       case 1: return countryName !== '' && legallyAuthorized !== '';
+      case 3: return selectedSkills.length > 0;
+      case 4: return languages.some((l) => l.language.trim() !== '');
+      case 7: return hoursPerWeek > 0 && daysAvailable.length > 0;
+      case 8: return opportunityPrefs.length > 0;
       case 9: return consentAccuracy && consentPrivacy && consentContact;
       default: return true;
     }
@@ -251,15 +255,16 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
       if (!appId) throw new Error('Failed to create application record.');
 
       // Status history
-      await supabase.from('agent_status_history').insert({
+      const { error: historyError } = await supabase.from('agent_status_history').insert({
         agent_id: agentId,
         status: 'submitted',
         changed_by: agentId,
         note: 'Application submitted',
       });
+      if (historyError) throw historyError;
 
       // Location
-      await supabase.from('agent_locations').upsert({
+      const { error: locationError } = await supabase.from('agent_locations').upsert({
         agent_id: agentId,
         country_name: countryName,
         country_code: countryCode,
@@ -270,9 +275,10 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
         currently_located_here: currentlyLocatedHere,
         location_clarification: currentlyLocatedHere ? '' : locationClarification,
       }, { onConflict: 'agent_id' });
+      if (locationError) throw locationError;
 
       // Experience
-      await supabase.from('agent_experience').upsert({
+      const { error: experienceError } = await supabase.from('agent_experience').upsert({
         agent_id: agentId,
         years_customer_service: yearsCS,
         years_bpo: yearsBPO,
@@ -288,31 +294,37 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
         has_admin_support: expFlags.includes('Administrative Support'),
         summary: experienceSummary,
       }, { onConflict: 'agent_id' });
+      if (experienceError) throw experienceError;
 
       // Skills
-      await supabase.from('agent_skills').delete().eq('agent_id', agentId);
+      const { error: skillsDeleteError } = await supabase.from('agent_skills').delete().eq('agent_id', agentId);
+      if (skillsDeleteError) throw skillsDeleteError;
       if (selectedSkills.length) {
-        await supabase.from('agent_skills').insert(selectedSkills.map((s) => ({ agent_id: agentId, skill: s })));
+        const { error: skillsInsertError } = await supabase.from('agent_skills').insert(selectedSkills.map((s) => ({ agent_id: agentId, skill: s })));
+        if (skillsInsertError) throw skillsInsertError;
       }
-      await supabase.from('agent_skills_other').upsert({
+      const { error: otherSkillsError } = await supabase.from('agent_skills_other').upsert({
         agent_id: agentId,
         skills_text: otherSkills,
       }, { onConflict: 'agent_id' });
+      if (otherSkillsError) throw otherSkillsError;
 
       // Languages
-      await supabase.from('agent_languages').delete().eq('agent_id', agentId);
+      const { error: langDeleteError } = await supabase.from('agent_languages').delete().eq('agent_id', agentId);
+      if (langDeleteError) throw langDeleteError;
       const validLangs = languages.filter((l) => l.language.trim());
       if (validLangs.length) {
-        await supabase.from('agent_languages').insert(validLangs.map((l) => ({
+        const { error: langInsertError } = await supabase.from('agent_languages').insert(validLangs.map((l) => ({
           agent_id: agentId,
           language: l.language,
           proficiency: l.proficiency,
           is_primary_local: l.isPrimaryLocal,
         })));
+        if (langInsertError) throw langInsertError;
       }
 
       // Equipment
-      await supabase.from('agent_equipment').upsert({
+      const { error: equipmentError } = await supabase.from('agent_equipment').upsert({
         agent_id: agentId,
         has_computer: hasComputer,
         computer_manufacturer: computerManufacturer,
@@ -329,9 +341,10 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
         has_backup_power: hasBackupPower,
         backup_power_description: backupPowerDesc,
       }, { onConflict: 'agent_id' });
+      if (equipmentError) throw equipmentError;
 
       // Internet
-      await supabase.from('agent_internet').upsert({
+      const { error: internetError } = await supabase.from('agent_internet').upsert({
         agent_id: agentId,
         primary_provider: primaryProvider,
         connection_type: connectionType,
@@ -340,9 +353,10 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
         backup_provider: backupProvider,
         has_backup_internet: hasBackupInternet,
       }, { onConflict: 'agent_id' });
+      if (internetError) throw internetError;
 
       // Availability
-      await supabase.from('agent_availability').upsert({
+      const { error: availabilityError } = await supabase.from('agent_availability').upsert({
         agent_id: agentId,
         availability_type: availabilityType,
         hours_per_week: hoursPerWeek,
@@ -353,21 +367,25 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
         workable_time_zones: workableTimeZones,
         custom_time_zone: customTimeZone,
       }, { onConflict: 'agent_id' });
+      if (availabilityError) throw availabilityError;
 
       // Opportunity preferences
-      await supabase.from('agent_opportunity_preferences').delete().eq('agent_id', agentId);
+      const { error: prefsDeleteError } = await supabase.from('agent_opportunity_preferences').delete().eq('agent_id', agentId);
+      if (prefsDeleteError) throw prefsDeleteError;
       if (opportunityPrefs.length) {
-        await supabase.from('agent_opportunity_preferences').insert(
+        const { error: prefsInsertError } = await supabase.from('agent_opportunity_preferences').insert(
           opportunityPrefs.map((p) => ({ agent_id: agentId, preference: p }))
         );
+        if (prefsInsertError) throw prefsInsertError;
       }
 
       // Update profile name
       const fullName = `${firstName} ${middleName} ${lastName}`.replace(/\s+/g, ' ').trim();
-      await supabase.from('profiles').update({
+      const { error: profileError } = await supabase.from('profiles').update({
         full_name: fullName || profile?.full_name || '',
         phone: mobilePhone,
       }).eq('id', agentId);
+      if (profileError) throw profileError;
 
       setSubmitted(true);
     } catch (err: unknown) {
@@ -600,7 +618,7 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
             <div className="space-y-4">
               <h2 className="text-lg font-bold text-white mb-1">Skills</h2>
               <p className="text-slate-500 text-sm mb-4">Select all skills that apply to you.</p>
-              <Field label="Select your skills">
+              <Field label="Select your skills" required hint="Select at least one skill to continue.">
                 <CheckboxGroup options={SKILL_OPTIONS} selected={selectedSkills} onToggle={(v) => setSelectedSkills((prev) => toggleArr(prev, v))} columns={2} />
               </Field>
               <Field label="Additional skills (optional)"><TextArea value={otherSkills} onChange={(e) => setOtherSkills(e.target.value)} rows={3} placeholder="List any other skills..." /></Field>
@@ -611,7 +629,7 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
           {step === 4 && (
             <div className="space-y-4">
               <h2 className="text-lg font-bold text-white mb-1">Language Skills</h2>
-              <p className="text-slate-500 text-sm mb-4">Add all languages you speak. Do not assume English is your primary language.</p>
+              <p className="text-slate-500 text-sm mb-4">Add all languages you speak. Do not assume English is your primary language. At least one language is required.</p>
               {languages.map((lang, i) => (
                 <div key={i} className="flex flex-col sm:flex-row gap-2 items-start sm:items-end">
                   <div className="flex-1 w-full">
@@ -743,7 +761,7 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
                 />
               </Field>
               <div className="grid sm:grid-cols-2 gap-4">
-                <Field label="Hours available per week">
+                <Field label="Hours available per week" required hint="Must be greater than 0.">
                   <Select value={String(hoursPerWeek)} onChange={(e) => setHoursPerWeek(Number(e.target.value))}>
                     {[0,5,10,15,20,25,30,35,40,45,50,55,60].map((n) => <option key={n} value={n}>{n}+ hrs</option>)}
                   </Select>
@@ -769,7 +787,7 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
                   </Select>
                 </Field>
               </div>
-              <Field label="Days Available">
+              <Field label="Days Available" required hint="Select at least one day.">
                 <CheckboxGroup options={DAYS_OF_WEEK} selected={daysAvailable} onToggle={(v) => setDaysAvailable((prev) => toggleArr(prev, v))} columns={3} />
               </Field>
               <Field label="Which time zones are you able to work?" hint="Select all that apply.">
@@ -786,7 +804,7 @@ export default function AgentApplicationForm({ onDone, onCancel }: Props) {
             <div className="space-y-4">
               <h2 className="text-lg font-bold text-white mb-1">Opportunity Preferences</h2>
               <p className="text-slate-500 text-sm mb-4">What types of opportunities interest you? Select all that apply.</p>
-              <Field label="Preferred opportunity types">
+              <Field label="Preferred opportunity types" required hint="Select at least one.">
                 <CheckboxGroup options={OPPORTUNITY_PREFERENCE_OPTIONS} selected={opportunityPrefs} onToggle={(v) => setOpportunityPrefs((prev) => toggleArr(prev, v))} columns={2} />
               </Field>
             </div>
