@@ -1,6 +1,6 @@
-import { Headset, Globe2, Shield } from 'lucide-react';
+import { Headset, Globe2, Shield, Route } from 'lucide-react';
 
-type View = 'dashboard' | 'apply' | 'recruitment' | 'privacy';
+type View = 'dashboard' | 'apply' | 'recruitment' | 'privacy' | 'how-it-works';
 
 type Props = {
   onNavigate?: (view: View) => void;
@@ -35,6 +35,13 @@ export default function Header({ onNavigate }: Props) {
               >
                 <Globe2 size={15} />
                 <span className="hidden sm:inline">Become an Agent</span>
+              </button>
+              <button
+                onClick={() => onNavigate('how-it-works')}
+                className="flex items-center gap-1.5 px-3 py-2 text-slate-400 hover:text-white text-sm font-medium transition-colors"
+              >
+                <Route size={15} />
+                <span className="hidden sm:inline">How it works</span>
               </button>
               <button
                 onClick={() => onNavigate('privacy')}

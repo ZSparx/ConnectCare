@@ -5,11 +5,12 @@ import AgentDashboard from './pages/AgentDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import RecruitmentLanding from './pages/RecruitmentLanding';
 import AgentApplicationForm from './pages/AgentApplicationForm';
+import HowItWorks from './pages/HowItWorks';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import { Headset, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
-type View = 'dashboard' | 'apply' | 'recruitment' | 'privacy';
+type View = 'dashboard' | 'apply' | 'recruitment' | 'privacy' | 'how-it-works';
 
 function AppContent() {
   const { session, profile, loading } = useAuth();
@@ -34,10 +35,7 @@ function AppContent() {
       <>
         <RecruitmentLanding
           onApply={() => setView('apply')}
-          onLearnMore={() => {
-            const el = document.getElementById('how-it-works');
-            el?.scrollIntoView({ behavior: 'smooth' });
-          }}
+          onHowItWorks={() => setView('how-it-works')}
           onSignIn={() => setView('dashboard')}
           onPrivacy={() => setView('privacy')}
         />
@@ -65,6 +63,16 @@ function AppContent() {
       <>
         <Header onNavigate={setView} />
         <PrivacyPolicy onBack={() => setView('dashboard')} />
+      </>
+    );
+  }
+
+  // How it works (agents only: signed-out visitors fall through to the sign-in page)
+  if (view === 'how-it-works') {
+    return (
+      <>
+        <Header onNavigate={setView} />
+        <HowItWorks onStartApplication={() => setView('apply')} />
       </>
     );
   }
